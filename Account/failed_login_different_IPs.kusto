@@ -1,0 +1,9 @@
+// Find repeating failed login attempts by the same account from different IPs
+// Finds failed login attempts by the same user from more than 3 different IPs in the last 1 day.
+// Event ID 4625: An account failed to log on.
+
+SecurityEvent 
+| where AccountType == "eli.shlomo@netafim.com" and EventID == 4625 and TimeGenerated > ago(1d) 
+| summarize IPCount = dcount(IpAddress), makeset(IpAddress)  by Account
+| where IPCount > 3
+| sort by IPCount desc
