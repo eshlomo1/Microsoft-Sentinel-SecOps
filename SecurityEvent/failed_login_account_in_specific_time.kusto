@@ -1,0 +1,11 @@
+// failed login account in specific time
+// Identifies failed accounts more than x times, and last login attempted 
+// Event ID 4625: failed log in
+
+let timeframe = 3d;
+SecurityEvent
+| where TimeGenerated > ago(3d)
+| where AccountType == "user@domain.com" and EventID == 4625 
+| summarize failed_login_attempts=count(), latest_failed_login=arg_max(TimeGenerated, Account) by Account 
+| where failed_login_attempts > 3
+| project-away Account1
