@@ -3,7 +3,7 @@
 // Event ID 4625: An account failed to log on.
 
 SecurityEvent 
-| where AccountType == "eli.shlomo@netafim.com" and EventID == 4625 and TimeGenerated > ago(1d) 
+| where AccountType == "user@domain.com" and EventID == 4625 and TimeGenerated > ago(1d) 
 | summarize IPCount = dcount(IpAddress), makeset(IpAddress)  by Account
 | where IPCount > 3
 | sort by IPCount desc
