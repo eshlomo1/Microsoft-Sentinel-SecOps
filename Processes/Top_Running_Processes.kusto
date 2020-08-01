@@ -1,0 +1,7 @@
+// Top running processes
+// Event ID 4688: A new process has been created.
+let RunProcesses = 
+    SecurityEvent
+    | where TimeGenerated > ago(7d)
+    | where EventID == "4688";
+

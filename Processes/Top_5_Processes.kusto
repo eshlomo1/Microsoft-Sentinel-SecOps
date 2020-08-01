@@ -1,0 +1,6 @@
+// Find the 5 processes that were run the most
+let Top5Processes =
+    RunProcesses
+    | summarize count() by Process
+    | top 5 by count_;
+

@@ -1,0 +1,8 @@
+// Find repeating failed login attempts by the same account from different IPs
+// Event ID 4625: An account failed to log on
+SecurityEvent 
+| where AccountType == "User" and EventID == 4625 and TimeGenerated > ago(9h) 
+| summarize IPCount = dcount(IpAddress), makeset(IpAddress)  by Account
+| where IPCount > 5
+| sort by IPCount desc
+
