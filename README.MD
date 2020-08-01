@@ -1,10 +1,11 @@
-# Azure Sentinel 4 SecOps 
+# Azure Sentinel 4 SecOps
 
 Welcome to the Azure Sentinel repository - Azure Sentinel 4 SecOps! This repository contains many queries for exploration, hunting and other activities.
 
 ## Resources
 
-[Azure Sentinel Blog-Posts](https://eshlomo.us)
+[Security Events](https://github.com/eshlomo1/AzureSentinel/tree/master/SecurityEvent)
+[Azure Sentinel Posts on Elli Shlomo blog](https://eshlomo.us)
 
 ## Contributing
 
