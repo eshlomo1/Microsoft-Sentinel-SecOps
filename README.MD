@@ -1,6 +1,6 @@
 # Azure Sentinel Queries
 
-Welcome to the Azure Sentinel repository! This repository contains many queries for exploration, hunting and other activities.
+Welcome to the Azure Sentinel repository - Azure Sentinel 4 SecOps! This repository contains many queries for exploration, hunting and other activities.
 
 # Resources
 
