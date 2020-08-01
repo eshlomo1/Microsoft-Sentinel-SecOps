@@ -1,0 +1,6 @@
+// Parse activity name and ID
+SecurityEvent
+| take 100
+| project Activity 
+| parse Activity with activityID " - " activityDesc
+

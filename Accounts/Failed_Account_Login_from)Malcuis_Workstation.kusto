@@ -1,0 +1,8 @@
+// Find accounts that failed to log in from computers with a security detection
+// Event ID 4625: failed log in
+let detections = toscalar(SecurityDetection
+    | summarize makeset(Computer));
+SecurityEvent
+| where Computer in (detections) and EventID == 4624
+| summarize count() by Account
+

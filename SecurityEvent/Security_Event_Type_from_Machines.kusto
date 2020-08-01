@@ -1,0 +1,5 @@
+// Security data type for 30 days from all machines
+SecurityEvent 
+| where TimeGenerated > ago(30d) 
+| project Account, Computer, Activity
+

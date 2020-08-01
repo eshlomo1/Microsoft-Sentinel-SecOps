@@ -1,0 +1,7 @@
+// Count security events by activity ID for 1 day
+SecurityEvent
+| where TimeGenerated > ago(1d) 
+| project Activity 
+| parse Activity with activityID " - " activityDesc
+| summarize count() by activityID
+

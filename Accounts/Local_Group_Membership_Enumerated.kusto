@@ -1,0 +1,9 @@
+//  A user's local group membership was enumerated
+// Event ID 4798: A user's local group membership was enumerated.
+// Event ID 4799: A security-enabled local group membership was enumerated
+
+SecurityEvent
+| where TimeGenerated > ago(3d)
+| where EventID in (4798, 4799)
+| project Account, Computer, Activity, EventID, CallerProcessName, TargetAccount
+

@@ -1,0 +1,5 @@
+//// Count security events related to permissions for 7 days
+SecurityEvent
+| where TimeGenerated > ago(7d)
+| summarize EventCount = countif(Activity has "Permissions")
+
