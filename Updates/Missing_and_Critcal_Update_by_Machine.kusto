@@ -1,0 +1,5 @@
+// Security updates and Critical Updates required by Machine
+Update
+| where OSType !=  “Linux” and UpdateState == “Needed” and Optional == “false” and (Classification == “Security Updates” or Classification == “Critical Updates”)
+| summarize UniqueUpdatesCount = count(), makeset(Title), makeset(KBID) by Computer
+

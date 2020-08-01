@@ -1,0 +1,9 @@
+// List of Machines missing updates and detected high severity security dections
+
+Update
+| where TimeGenerated >= ago(15d)
+| where UpdateState == "Needed"
+| summarize UpdatesNeeded=makeset(Title), Updates=dcount(Title) by Computer
+| join kind= innerunique
+    ()
+
