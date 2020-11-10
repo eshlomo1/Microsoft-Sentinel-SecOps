@@ -6,7 +6,7 @@ This repository contains many queries for exploration, hunting, process and othe
 
 ## Resources
 
-[Security Events](https://github.com/eshlomo1/AzureSentinel/tree/master/SecurityEvent)
+[Security Events](https://github.com/eshlomo1/AzureSentinel4SecOps/tree/master/Security%20Events)
 
 [Azure Sentinel Posts on Elli Shlomo blog](https://eshlomo.us)
 
