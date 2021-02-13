@@ -1,0 +1,8 @@
+// Search for Mail item by Subject
+OfficeActivity
+| where TimeGenerated > ago(3d) 
+| where OfficeWorkload == "Exchange"
+| extend Subject_ = tostring(parse_json(AffectedItems)[0].Subject)
+| where Subject_ contains "The relevant subject"
+| project TimeGenerated, UserId, ClientIP, ExternalAccess,ClientVersion 
+| sort by TimeGenerated
