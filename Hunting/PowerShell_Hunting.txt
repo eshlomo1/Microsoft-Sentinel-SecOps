@@ -1,4 +1,4 @@
-### PowerShell Dangerous Commands for Azure Sentinel Hunting 
+### TOP PowerShell Dangerous Commands for Azure Sentinel Hunting 
 
 let timeframe = 7d;
 union Event, SecurityEvent
@@ -6,7 +6,8 @@ union Event, SecurityEvent
 | where EventID in (4103, 4104, 4105, 4688)
 | where EventData contains "Relvant commands from the list below (can be one or more command)"
 
-#### PowerShell Command list
+- PowerShell Command list -
+
 	Write-CMDServiceBinary
 	Write-UserAddMSI
 	Write-ServiceEXE
