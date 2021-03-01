@@ -15,11 +15,7 @@ union Event, SecurityEvent
 	Restore-ServiceEXE
 	Invoke-ServiceStart
 	Invoke-ServiceStop
-	Mimikatz
-	EncodedCommand
-	Payload
-	Find-AVSignature
-	DllInjection
+	Find-AVSignature	
 	ReflectivePEInjection
 	Invoke-Shellcode
 	Invoke--Shellcode
