@@ -6,11 +6,11 @@ This repository contains many Azure Sentinel content with queries for exploratio
 
 ### Resources
 
-[General](https://github.com/eshlomo1/Azure-Sentinel-4-SecOps/tree/master/General)
-[Hunting](https://github.com/eshlomo1/Azure-Sentinel-4-SecOps/tree/master/Hunting)
-[Processes](https://github.com/eshlomo1/Azure-Sentinel-4-SecOps/tree/master/Processes)
-[Security Events](https://github.com/eshlomo1/AzureSentinel4SecOps/tree/master/Security%20Events)
-[Updates](https://github.com/eshlomo1/Azure-Sentinel-4-SecOps/tree/master/Updates)
+* [General](https://github.com/eshlomo1/Azure-Sentinel-4-SecOps/tree/master/General)
+* [Hunting](https://github.com/eshlomo1/Azure-Sentinel-4-SecOps/tree/master/Hunting)
+* [Processes](https://github.com/eshlomo1/Azure-Sentinel-4-SecOps/tree/master/Processes)
+* [Security Events](https://github.com/eshlomo1/AzureSentinel4SecOps/tree/master/Security%20Events)
+* [Updates](https://github.com/eshlomo1/Azure-Sentinel-4-SecOps/tree/master/Updates)
 
 [Azure Sentinel Posts on Elli Shlomo blog](https://eshlomo.us)
 
