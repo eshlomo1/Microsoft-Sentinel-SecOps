@@ -4,6 +4,9 @@
 
 This repository contains many Azure Sentinel content with queries for exploration, hunting, and other activities.
 
+<img src="https://github.com/eshlomo1/Azure-Sentinel-4-SecOps/blob/master/General/Azure%20Sentinel%204%20SecOps.png">
+
+
 ### Resources
 
 * [General](https://github.com/eshlomo1/Azure-Sentinel-4-SecOps/tree/master/General)
