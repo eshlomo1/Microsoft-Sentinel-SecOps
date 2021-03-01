@@ -1,12 +1,12 @@
-### PowerShell Dangerous Commands for Azure Sentinel 
+### PowerShell Dangerous Commands for Azure Sentinel Hunting 
 
 let timeframe = 7d;
 union Event, SecurityEvent
 | where TimeGenerated >= ago(timeframe)
 | where EventID in (4103, 4104, 4105, 4688)
-| where EventData contains "Put here the relvant command from the list below "
+| where EventData contains "Relvant commands from the list below (can be one or more command)"
 
-#### PowerShell command list
+#### PowerShell Command list
 	Write-CMDServiceBinary
 	Write-UserAddMSI
 	Write-ServiceEXE
@@ -42,7 +42,7 @@ union Event, SecurityEvent
 	Invoke-ServiceUserAdd
 	Invoke-ServiceCMD
 	Write-UserAddServiceBinary
-  Invoke-ServiceEnable
+    Invoke-ServiceEnable
 	Invoke-ServiceDisable
 	Invoke-FindDLLHijack
 	Invoke-FindPathHijack
@@ -78,7 +78,7 @@ union Event, SecurityEvent
 	Create-MultipleSessions
 	Run-EXEonRemote
 	Invoke-BruteForce
-  Get-PSADForestKRBTGTInfo
+ 	Get-PSADForestKRBTGTInfo
 	Discover-PSMSSQLServers
 	Discover-PSMSExchangeServers
 	Get-PSADForestInfo
@@ -104,4 +104,3 @@ union Event, SecurityEvent
 	Add-Persistence
 	Remove-Persistence
 	Invoke-CreateCertificate
-	
