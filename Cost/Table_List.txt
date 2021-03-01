@@ -1,0 +1,5 @@
+search *
+| where TimeGenerated > ago(31d)
+| summarize count() by $table
+| sort by count_ desc
+| render piechart 

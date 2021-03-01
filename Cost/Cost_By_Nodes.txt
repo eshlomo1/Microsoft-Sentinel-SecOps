@@ -1,0 +1,20 @@
+find where TimeGenerated >= startofday(ago(31d)) and TimeGenerated < startofday(now())
+project Computer, _IsBillable, Type, TimeGenerated
+| where Type !in
+(
+"Perf", "Event", "DeviceEvents", " SecurityEvent", " DeviceNetworkEvents",
+"DeviceFileEvents", " DeviceProcessEvents", " DeviceFileCertificateInfo", " SecurityRegulatoryCompliance",
+"AADNonInteractiveUserSignInLogs", " AzureActivity", " DeviceRegistryEvents", " DeviceNetworkInfo",
+"ADCSV_CL", " AD_Metadata_CL", " DeviceImageLoadEvents", " Usage", " OfficeActivity", " Operation",
+" Heartbeat", " DeviceInfo", " DeviceLogonEvents", " SigninLogs", " DnsEvents", " SecurityBaseline",
+" UserPeerAnalytics", " AuditLogs", " SecurityRecommendation", " SecurityAlert", " UserAccessAnalytics",
+"SecurityIncident", " AADManagedIdentitySignInLogs", " ADDS_Metadata_CL", " SecureScores",
+" Update", " SecurityNestedRecommendation", " SecureScoreControls", " DnsInventory", " ProtectionStatus",
+"SecurityDetection", " AADServicePrincipalSignInLogs", " ComputerGroup", " UpdateSummary", " AD_Metadata1_CL", " SecurityBaselineSummary"
+)
+| extend computerName = tolower(tostring(split(Computer, '.')[0]))
+| where computerName != ""
+| where _IsBillable == true
+| summarize billableNodesPerHour=dcount(computerName) by bin(TimeGenerated, 1h)
+| summarize billableNodesPerDay = sum(billableNodesPerHour)/24., billableNodeMonthsPerDay = sum(billableNodesPerHour)/24./31. by day=bin(TimeGenerated, 1d)
+| sort by billableNodesPerDay desc
