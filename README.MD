@@ -6,7 +6,6 @@ This repository contains many Azure Sentinel content with queries for exploratio
 
 <img src="https://github.com/eshlomo1/Azure-Sentinel-4-SecOps/blob/master/General/Azure%20Sentinel%204%20SecOps.png">
 
-
 ### Resources
 
 * [Hunting](https://github.com/eshlomo1/Azure-Sentinel-4-SecOps/tree/master/Hunting)
