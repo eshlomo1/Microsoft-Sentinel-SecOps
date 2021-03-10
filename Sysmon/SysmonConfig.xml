@@ -1,7 +1,7 @@
 <!--
   sysmon-config | A Sysmon configuration focused on default high-quality event tracing and easy customization by the community
-  Source project:	https://github.com/SwiftOnSecurity/sysmon-config
-  Version:	Sysmon Config 1.0  
+  Source project: https://github.com/SwiftOnSecurity/sysmon-config
+  Version: Sysmon Config 1.0  
 -->
 
 <Sysmon schemaversion="4.50">
