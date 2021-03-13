@@ -1,4 +1,6 @@
-// ProxyLOGON Indicators of Compromise
+### ProxyLOGON Indicators of Compromise
+
+#### Files
 
 Filename	MD5 Hash	Path
 code	A19456A9D930334D7C97A37D202E3CB5	C:\Users\Public\opera\
@@ -13,3 +15,17 @@ vspmsg.dll	DA4A376F5F0E771E7AC01AD42FFAFBD0	C:\ProgramData\VSPerfMon
 ServiceHub_Host_CLR.config	217B7244D8AC1D7604B0848A9A283945	C:\ProgramData\VSPerfMon
 supp0rt.aspx	5CFA1868F0112B1F413CCD527F08EACF	C:\inetpub\wwwroot\aspnet_client\
 error_page.aspx	354B3C8A54BA3B23C6B899BF5830D777	C:\inetpub\wwwroot\aspnet_client\error_page.aspx
+
+#### IP's
+
+185[.]125.231.175
+86[.]105.18.116
+185[.]224.83.137
+107[.]173.83.123
+201[.]162.109.184
+68[.]2.82.62
+182[.]215.181.200
+45[.]15.9.45
+182[.]18.152.105
+141[.]164.40.193
+172[.]105.87.139
