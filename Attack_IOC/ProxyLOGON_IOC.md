@@ -1,6 +1,6 @@
-### ProxyLOGON Indicators of Compromise
+## ProxyLOGON Indicators of Compromise
 
-#### Files
+### Files
 
 Filename	MD5 Hash	Path
 
@@ -28,7 +28,7 @@ supp0rt.aspx	5CFA1868F0112B1F413CCD527F08EACF	C:\inetpub\wwwroot\aspnet_client\
 
 error_page.aspx	354B3C8A54BA3B23C6B899BF5830D777	C:\inetpub\wwwroot\aspnet_client\error_page.aspx
 
-#### IP's
+### IP's
 
 185[.]125.231.175
 
