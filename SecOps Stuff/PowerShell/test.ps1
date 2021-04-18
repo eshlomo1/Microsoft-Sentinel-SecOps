@@ -1,4 +1,0 @@
-﻿foreach ($item in $collection)
-{
-    
-}

@@ -1,8 +1,0 @@
-[version("1.0.0"), FriendlyName("Computer")] 
-class Demo_Computer : MSFT_BaseResourceConfiguration
-{
-  [Key] string Name;
-  [Write] string DomainName;
-  [Write,EmbeddedInstance("MSFT_Credential")] string Credential;
-  [write,ValueMap{"Present", "Absent"},Values{"Present", "Absent"}] string Ensure;
-};

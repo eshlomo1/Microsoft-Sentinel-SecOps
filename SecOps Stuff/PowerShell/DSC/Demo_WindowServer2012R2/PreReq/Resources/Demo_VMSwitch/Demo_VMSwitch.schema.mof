@@ -1,8 +1,0 @@
-[version("1.0.0"), FriendlyName("VMSwitch")] 
-class Demo_VMSwitch : MSFT_BaseResourceConfiguration
-{
-  [Key] string Name;
-  [write,ValueMap{"Present", "Absent"},Values{"Present", "Absent"}] string Ensure;
-  [write,ValueMap{"Internal", "Private"},Values{"Internal", "Private"}] string Type;
-  [read] boolean AllowManagementOS;
-};

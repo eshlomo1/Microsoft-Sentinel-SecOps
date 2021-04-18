@@ -1,7 +1,0 @@
-[version("1.0.0"), FriendlyName("DCPromo")] 
-class Demo_DCPromo : MSFT_BaseResourceConfiguration
-{
-  [Key] string DomainName;
-  [Key,EmbeddedInstance("MSFT_Credential")] string SafeModeAdministratorPassword;
-  [write,ValueMap{"Present", "Absent"},Values{"Present", "Absent"}] string Ensure;
-};

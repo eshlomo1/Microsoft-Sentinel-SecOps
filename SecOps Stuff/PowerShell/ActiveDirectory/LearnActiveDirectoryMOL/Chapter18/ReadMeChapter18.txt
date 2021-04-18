@@ -1,1 +1,0 @@
-There isn't a lab or further data for chapter18.

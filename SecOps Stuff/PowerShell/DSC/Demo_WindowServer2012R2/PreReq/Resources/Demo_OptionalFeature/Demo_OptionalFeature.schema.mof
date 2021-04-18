@@ -1,6 +1,0 @@
-[version("1.0.0"), FriendlyName("OptionalFeature")] 
-class Demo_OptionalFeature : MSFT_BaseResourceConfiguration
-{
-  [Key] string Name;
-  [write,ValueMap{"Present","Absent"},Values{"Present","Absent"}] string Ensure;
-};
