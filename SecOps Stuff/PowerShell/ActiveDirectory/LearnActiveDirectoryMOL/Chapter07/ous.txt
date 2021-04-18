@@ -1,0 +1,9 @@
+Name,Path
+ADML4,"DC=Manticore,DC=org"
+Computers,"OU=ADML4,DC=Manticore,DC=org"
+Users,"OU=ADML4,DC=Manticore,DC=org"
+Desktops,"OU=Computers,OU=ADML4,DC=Manticore,DC=org"
+Laptops,"OU=Computers,OU=ADML4,DC=Manticore,DC=org"
+Staff,"OU=Users,OU=ADML4,DC=Manticore,DC=org"
+Contractors,"OU=Users,OU=ADML4,DC=Manticore,DC=org"
+Managers,"OU=Users,OU=ADML4,DC=Manticore,DC=org"

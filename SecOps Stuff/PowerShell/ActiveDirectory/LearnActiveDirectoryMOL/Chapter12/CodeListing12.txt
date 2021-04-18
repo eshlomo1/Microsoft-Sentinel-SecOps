@@ -1,0 +1,56 @@
+<#
+ Code listings from:
+  Active Directory Management in a Month of Lunches
+  Chapter 12
+
+ All code supplied "as is" as an example to illustrate the text. No guarantees or warranties are supplied with this code.
+ It is YOUR responsibilty to test if for suitability in YOUR environment.
+ The comments match the section headings in the chapter
+#>
+
+
+# USING POWERSHELL TO FIND DOMAIN CONTROLLERS
+
+Get-ADDomainController -Filter * | 
+Format-Table Name, Site, IPv4Address, IsGlobalCatalog, IsReadOnly -AutoSize
+
+
+#12.1.2	Testing the availability of a domain controller
+Test-Connection -ComputerName server02 -Quiet -Count 1
+
+Get-Service -ComputerName server02 -Name ADWS, Netlogon, DFSR, NtFrs, DNS, Kdc, W32Time 
+
+#12.1.3	Services 
+Get-ADDomainController -Discover -Service PrimaryDC
+Get-ADDomainController -Discover -Service GlobalCatalog
+Get-ADDomainController -Discover -Service KDC
+Get-ADDomainController -Discover -Service TimeService
+Get-ADDomainController -Discover -Service ReliableTimeService
+Get-ADDomainController -Discover -Service ADWS
+
+# Finding Global Catalog
+#USING POWERSHELL
+Get-ADForest | select -ExpandProperty GlobalCatalogs
+
+Get-ADForest | select -ExpandProperty GlobalCatalogs |
+foreach {
+  Get-ADDomainController –Identity $_ |
+  select Name, Domain, Site
+} 
+
+#12.2.2	Creation of a global catalog
+Using PowerShell - see new-globalcatlaog in download folder for this chapter
+
+#12.2.3	Removal - of global catalog
+Using PowerShell - see remove-globalcatlaog in download folder for this chapter
+
+#12.3.1	Discovering FSMO role holders
+Get-ADForest | Format-Table *master
+Get-ADDomain | Format-Table PDCEmulator, *master
+
+TRANSFERRING A FSMO ROLE USING POWERSHELL
+Move-afsmo –server server03 –fsmo rid
+
+move-afsmo is in download folder for this chapter
+
+

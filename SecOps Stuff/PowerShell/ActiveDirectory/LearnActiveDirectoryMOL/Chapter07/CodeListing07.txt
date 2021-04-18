@@ -1,0 +1,52 @@
+<#
+ Code listings from:
+  Active Directory Management in a Month of Lunches
+  Chapter 07
+
+ All code supplied "as is" as an example to illustrate the text. No guarantees or warranties are supplied with this code.
+ It is YOUR responsibilty to test if for suitability in YOUR environment.
+ The comments match the section headings in the chapter
+#>
+
+
+# 7.3	Creating an OU with PowerShell 
+New-ADOrganizationalUnit -Name ADML3 -Path "DC=manticore,DC=org" -ProtectedFromAccidentalDeletion:$true  -PassThru
+
+New-ADOrganizationalUnit -Name Chapter7 -Path "OU=ADML3,DC=manticore,DC=org" -ProtectedFromAccidentalDeletion:$true  -PassThru
+
+
+#bulk creation - see bulkcreateous.txt
+
+Import-Csv C:\Scripts\ADLunches\ous.txt |
+foreach {
+New-ADOrganizationalUnit -Name $_.Name -Path $_.Path -ProtectedFromAccidentalDeletion:$true -PassThru
+} 
+
+#7.4	Protecting OUs from accidental deletion
+Get-ADObject -Filter {Name -eq "ADML1"} -Properties ProtectedFromAccidentalDeletion
+
+# turn off
+Get-ADObject -Filter {Name -eq "ADML1"} | 
+Set-ADObject -ProtectedFromAccidentalDeletion $false –PassThru
+
+#turn on
+Get-ADObject -Filter {Name -eq "ADML1"} | 
+Set-ADObject -ProtectedFromAccidentalDeletion $true –PassThru
+
+#7.5.1	Renaming an OU
+Get-ADObject -Filter {Name -eq "ADML12"} | Rename-ADObject -NewName ADML1
+
+# 7.5.2	Adding a description to the OU
+Get-ADOrganizationalUnit -Filter {Name -eq 'ADML1'} | Set-ADOrganizationalUnit -Description "AD Month of Lunches Test OU"
+
+#7.5.3	Changing the Managed By setting
+Get-ADOrganizationalUnit -Filter {Name -eq 'ADML1'} | Set-ADOrganizationalUnit -ManagedBy (Get-ADUser -Filter {Name -eq "Green Jo"})
+
+#7.5.4	Deleting an OU
+Get-ADOrganizationalUnit -Filter {Name -eq "ADML5"} | Remove-ADOrganizationalUnit -Recursive
+
+#7.6	Moving objects between OUs
+Get-ADObject -Filter {Name -eq "ADLComp10"} | Move-ADObject -TargetPath "OU=ADML1,DC=Manticore,DC=org"
+
+
+

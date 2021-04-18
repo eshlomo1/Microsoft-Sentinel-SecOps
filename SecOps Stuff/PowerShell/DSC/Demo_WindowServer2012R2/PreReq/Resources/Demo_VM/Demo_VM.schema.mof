@@ -1,0 +1,21 @@
+[version("1.0.0"), FriendlyName("VM")] 
+class Demo_VM : MSFT_BaseResourceConfiguration
+{
+  [Key] string Name;
+  [Key] string VhDPath;
+  [Key] string SwitchName;
+  [Write] boolean WaitForIP;
+  [write] uint32 StartupMemoryMB;
+  [write,ValueMap{"Running","Paused","Off"},Values{"Running","Paused","Off"}] string State;
+  [write,ValueMap{"Present","Absent"},Values{"Present","Absent"}] string Ensure;
+  [read] uint32 Id;
+  [read] string Status;
+  [read] uint32 CPUUsage;
+  [read] real32 MemoryAssigned;
+  [read] real32 MemoryStartup;
+  [read] string Uptime;
+  [read] datetime Creationtime;
+  [read] boolean DynamicMemoryEnabled;
+  [read] uint32 ProcessorCount;
+  [read] string NetworkAdapters[];
+};

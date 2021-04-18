@@ -1,0 +1,8 @@
+[version("1.0.0"), FriendlyName("DHCPOption")] 
+class Demo_DHCPOption : MSFT_BaseResourceConfiguration
+{   
+  [Key] string DNSServerName;
+  [Key] string DomainName;
+  [Key] string Router;
+  [write,ValueMap{"Present", "Absent"},Values{"Present", "Absent"}] string Ensure;
+};

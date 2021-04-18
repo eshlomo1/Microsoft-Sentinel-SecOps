@@ -1,0 +1,7 @@
+[version("1.0.0"), FriendlyName("DHCPServerInDC")] 
+class Demo_DHCPServerInDC : MSFT_BaseResourceConfiguration
+{
+  [Key] string DNSName;
+  [Key] string IPAddress;
+  [write,ValueMap{"Present", "Absent"},Values{"Present", "Absent"}] string Ensure;
+};

@@ -1,0 +1,83 @@
+<#
+ Code listings from:
+  Active Directory Management in a Month of Lunches
+  Chapter 13
+
+ All code supplied "as is" as an example to illustrate the text. No guarantees or warranties are supplied with this code.
+ It is YOUR responsibilty to test if for suitability in YOUR environment.
+ The comments match the section headings in the chapter
+#>
+
+
+# 13.1	Protection from accidental deletion
+
+Get-ADUser -Filter * -Properties ProtectedFromAccidentalDeletion -SearchBase "OU=ADMLUsers,OU=ADMLunches,DC=manticore,DC=org"  | Format-Table Name, ProtectedFromAccidentalDeletion -AutoSize
+
+# to set for all objects in OU
+Get-ADObject -Identity "OU=ADMLUsers,OU=ADMLunches,DC=manticore,DC=org" -Properties ProtectedFromAccidentalDeletion | Set-ADObject -ProtectedFromAccidentalDeletion:$true
+
+Get-ADUser -SearchBase "OU=ADMLUsers,OU=ADMLunches,DC=manticore,DC=org" -Filter * -Properties ProtectedFromAccidentalDeletion | Set-ADObject -ProtectedFromAccidentalDeletion:$true
+
+#13.2	Snapshots
+see snapshot.txt in download folder
+
+#13.3.1	Installing the AD Recycle Bin
+
+Enable-ADOptionalFeature ‘Recycle Bin Feature’ –Scope ForestOrConfigurationSet –Target ‘manticore.org’ –Server server02
+
+#searching recycle bin
+Get-ADObject -IncludeDeletedObjects -Filter {objectclass -eq 'user' -and Deleted -eq $true} | select –ExpandProperty Name
+
+Get-ADObject -IncludeDeletedObjects -Properties * -Filter {Deleted -eq $true } | where LastKnownParent -like 'OU=ADMLusers*' | Format-List  Name, objectGUID, LastKnownParent 
+
+#13.3.3	Restoring a user account
+Get-ADObject -IncludeDeletedObjects -Properties * -Filter {objectGUID -eq '28f0c168-d142-417f-a223-333488cdaa77'} | Restore-ADObject
+
+
+# 13.3.4	Searching for and restoring an OU
+
+Get-ADObject -IncludeDeletedObjects -Properties * -Filter {Deleted -eq $true -AND objectclass -eq 'organizationalUnit' } | Format-List Name, ObjectGUID, LastKnownParent
+
+Get-ADObject -IncludeDeletedObjects -Properties * -Filter {Deleted -eq $true -AND objectclass -eq 'organizationalUnit' -AND Name -like 'ADMLusers'}
+
+Get-ADObject -IncludeDeletedObjects -Properties * -Filter {Deleted -eq $true -AND objectclass -eq 'organizationalUnit' -AND Name -like 'ADMLusers'} | Restore-ADObject
+
+
+#13.4.1	Backing up a domain controller
+
+Install-WindowsFeature -Name Windows-Server-Backup –IncludeAllSubFeature
+
+Import-Module WindowsServerBackup        #1
+$wbpolicy = New-WBPolicy                 #2
+
+$volume = Get-WBVolume -VolumePath C: 
+Add-WBVolume -Policy $wbpolicy -Volume $volume #3
+ 
+Add-WBSystemState $wbpolicy 
+Add-WBBareMetalRecovery $wbpolicy #3
+ 
+$backupLocation = New-WBBackupTarget -VolumePath R: 
+Add-WBBackupTarget -Policy $wbpolicy -Target $backupLocation #4
+ 
+Set-WBVssBackupOptions -Policy $wbpolicy -VssCopyBackup 
+ 
+Start-WBBackup -Policy $wbpolicy #5
+
+#13.4.2	Restoring the AD database
+#PERFORMING A NONAUTHORITATIVE RESTORE
+
+$bkup = Get-WBBackupSet | select -Last 1
+Start-WBSystemStateRecovery -BackupSet $bkup 
+
+
+#PERFORMING AN AUTHORITATIVE RESTORE
+$bkup = Get-WBBackupSet | select -Last 1
+Start-WBSystemStateRecovery -BackupSet $bkup -AuthoritativeSysvolRecovery 
+
+
+
+
+
+
+
+

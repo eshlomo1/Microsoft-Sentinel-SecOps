@@ -1,0 +1,68 @@
+<#
+ Code listings from:
+  Active Directory Management in a Month of Lunches
+  Chapter 16
+
+ All code supplied "as is" as an example to illustrate the text. No guarantees or warranties are supplied with this code.
+ It is YOUR responsibilty to test if for suitability in YOUR environment.
+ The comments match the section headings in the chapter
+#>
+
+# 16.2.1	Viewing current sites
+Get-ADReplicationSite
+
+Get-ADReplicationSite -Filter {Name -eq 'Site1'}
+
+# 16.2.2	Creating an AD site
+New-ADReplicationSite -Name ADMLsite2 -Description "ADML test site 2" -ProtectedFromAccidentalDeletion $true -OtherAttributes @{Location = "Dallas"}
+
+#16.3.1	Viewing Subnets
+Get-ADReplicationSubnet -Filter *
+
+# 16.3.2	Creating Subnets
+
+New-ADReplicationSubnet -Name '10.10.56.0/24' -Location 'Dallas' -Description 'ADML site 2 subnet' -Site ADMLsite2
+
+Get-ADReplicationSubnet -Identity '10.10.56.0/24'  | 
+Set-ADObject -ProtectedFromAccidentalDeletion $true
+
+
+# 16.3.3	Deleting Subnets
+Get-ADReplicationSubnet -Identity '10.10.56.0/24'  | 
+Remove-ADReplicationSubnet
+
+
+# 16.4.1	Viewing Site Links
+Get-ADReplicationSiteLink 
+
+# 16.4.2	Creating Site Links
+New-ADReplicationSiteLink -InterSiteTransportProtocol IP  -Name 'ADMLsite1-ADMLsite2' -SitesIncluded ADMLsite1, ADMLsite2 -Cost 100 -ReplicationFrequencyInMinutes 180 -Description "Primary site link between ADMLsite1 and ADMLsite2" -PassThru
+
+
+# 16.4.3	Removing sites from site links
+Get-ADReplicationSiteLink -Identity DEFAULTIPSITELINK | 
+select -ExpandProperty SitesIncluded
+
+
+Set-ADReplicationSiteLink -Identity DEFAULTIPSITELINK -SitesIncluded @{Remove='ADMLsite1'}
+
+
+# 16.4.4	Modifying site links
+Set-ADReplicationSiteLink -Identity 'ADMLsite1-ADMLsite2' -Cost 150
+
+Set-ADReplicationSiteLink -Identity 'ADMLsite1-ADMLsite2' -ReplicationFrequencyInMinutes 30
+
+
+$schedule = New-Object -TypeName System.DirectoryServices.ActiveDirectory.ActiveDirectorySchedule
+$schedule.ResetSchedule()
+$schedule.SetDailySchedule("Nineteen","Zero","TwentyThree","FortyFive")
+Set-ADReplicationSiteLink -Identity 'ADMLsite1-ADMLsite2' -ReplicationSchedule $schedule
+
+# split schedule
+$schedule = New-Object -TypeName System.DirectoryServices.ActiveDirectory.ActiveDirectorySchedule
+$schedule.ResetSchedule()
+$schedule.SetDailySchedule("Zero","Zero","Six","Fifteen")
+Set-ADReplicationSiteLink -Identity 'ADMLsite1-ADMLsite2' -ReplicationSchedule $schedule
+
+$schedule.SetDailySchedule("Nineteen","Zero","TwentyThree","FortyFive")
+Set-ADReplicationSiteLink -Identity 'ADMLsite1-ADMLsite2' -ReplicationSchedule $schedule

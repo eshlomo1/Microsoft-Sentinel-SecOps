@@ -1,0 +1,35 @@
+<#
+ Code listings from:
+  Active Directory Management in a Month of Lunches
+  Chapter 20
+
+ All code supplied "as is" as an example to illustrate the text. No guarantees or warranties are supplied with this code.
+ It is YOUR responsibilty to test if for suitability in YOUR environment.
+ The comments match the section headings in the chapter
+#>
+
+#
+# Most code as listings in chapter's download folder
+#
+
+# 20.2.4	Testing user passwords
+
+#FINDING PASSWORDS THAT DON’T HAVE AN EXPIRATION DATE
+Search-ADAccount -PasswordNeverExpires -UsersOnly | select Name, DistinguishedName
+
+#CHECKING PASSWORD POLICIES IN A DOMAIN
+Get-ADDefaultDomainPasswordPolicy | select *Password*
+
+Get-ADFineGrainedPasswordPolicy -Filter * | Select Name, *Password*
+
+#20.3.1	Clean up old accounts
+Search-ADAccount -AccountInactive -TimeSpan 90.00:00:00 |  select Name, DistinguishedName, LastLogonDate
+
+
+Get-ADUser -Identity richard -Properties * |
+select Name, LastLogonDate,
+@{N='LastLogonTimeStamp'; E={[DateTime]::FromFileTime([int64]::Parse($_.LastLogonTimeStamp))}},  
+@{N='LastLogon'; E={[DateTime]::FromFileTime([int64]::Parse($_.LastLogon))}} 
+
+
+Search-ADAccount -AccountInactive -UsersOnly -TimeSpan 90.00:00:00 | where LastLogonDate | select Name, DistinguishedName, LastLogonDate

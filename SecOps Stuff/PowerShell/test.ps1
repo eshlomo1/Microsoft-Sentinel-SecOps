@@ -1,0 +1,4 @@
+﻿foreach ($item in $collection)
+{
+    
+}

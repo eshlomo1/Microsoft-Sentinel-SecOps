@@ -1,0 +1,41 @@
+<#
+ Code listings from:
+  Active Directory Management in a Month of Lunches
+  Chapter 06
+
+ All code supplied "as is" as an example to illustrate the text. No guarantees or warranties are supplied with this code.
+ It is YOUR responsibilty to test if for suitability in YOUR environment.
+ The comments match the section headings in the chapter
+#>
+
+
+# 6.1.3	Creating a computer account using PowerShell
+
+New-ADComputer -Enabled $true -Name ADLComp3 -Path "CN=Computers,DC=Manticore,DC=org" -SamAccountName ADLCOMP3
+
+#6.2.2	Using PowerShell to join a machine to the domain
+
+$cred = Get-Credential 
+Add-Computer -Credential $cred -DomainName Manticore -OUPath "OU=Security Servers,OU=Servers,DC=Manticore,DC=org" -Force 
+Restart-Computer
+
+#6.3	Managing the secure channel
+if (-not(Test-ComputerSecureChannel)){
+ Test-ComputerSecureChannel -Repair –Verbose
+}
+
+#6.4	Deleting a computer account
+Search-ADAccount -AccountInactive  -ComputersOnly | Format-Table Name, DistinguishedName, LastLogonDate, ObjectClass  -Autosize
+
+Search-ADAccount -AccountInactive -ComputersOnly -TimeSpan "90:00:00"| where ObjectClass -eq "Computer" | Format-Table Name, DistinguishedName, LastLogonDate, ObjectClass -Autosize 
+
+
+## an example of computersTodelete.txt is included in the download for this chapter
+Import-Csv -Path C:\Scripts\ADLunches\computersTodelete.txt |
+foreach {
+ Remove-ADComputer -Identity $_.Name -Confirm:$false 
+} 
+
+
+
+ 

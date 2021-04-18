@@ -1,0 +1,26 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>Fourth Coffee - Bakery</title>
+        <link href="@Href("~/Styles/Site.css")" rel="stylesheet" />
+        <link href="@Href("~/favicon.ico")" rel="shortcut icon" type="image/x-icon" />
+    </head>
+    <body>
+        <div id="page">
+            <div id="header">
+                <p class="site-title"><a href="@Href("~/")">Fourth Coffee</a></p>
+                <ul id="menu">
+                    <li><a href="@Href("~/")">Home</a></li>
+                    <li><a href="@Href("~/About")">About Us</a></li>
+                </ul>
+            </div>
+            <div id="body">
+                @RenderBody()
+            </div>
+            <div id="footer">
+                &copy;@DateTime.Now.Year - Fourth Coffee
+            </div>
+        </div>
+    </body>
+</html>
