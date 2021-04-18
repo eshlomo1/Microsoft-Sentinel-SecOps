@@ -1,0 +1,29 @@
+# ShowObjMeta based replication
+
+# Get-ADReplicationAttributeMetadata
+
+# Returns the replication metadata for one or more Active Directory replication partners
+repadmin /ShowObjMeta localhost "CN=Administrator,CN=Users,DC=lab,DC=local"
+
+# Wrapped Table
+Get-ADuser administrator |
+ Get-ADReplicationAttributeMetadata -Server localhost |
+ Format-Table LocalChangeUsn, LastOriginatingChangeDirectoryServerIdentity, LastOriginatingChangeUsn, LastOriginatingChangeTime, Version, AttributeName -Wrap
+
+# Out-GridView
+Get-ADuser administrator |
+ Get-ADReplicationAttributeMetadata -Server localhost |
+ Select-Object LocalChangeUsn, LastOriginatingChangeDirectoryServerIdentity, LastOriginatingChangeUsn, LastOriginatingChangeTime, Version, AttributeName |
+ Out-GridView
+
+# Make several attribute updates
+Get-ADUser administrator | Get-ADReplicationAttributeMetadata -Server DCNAME | ogv
+Set-ADUser administrator -GivenName "Priv account"
+Set-ADUser administrator -GivenName "Priv account"
+Get-ADUser administrator | Get-ADReplicationAttributeMetadata -Server DCNAME | ? AttributeName -eq "givenName" | ogv
+
+# Show all attributes that have been updated since creation
+Get-ADuser administrator |
+ Get-ADReplicationAttributeMetadata -Server DCNAME |
+ Where-Object Version -GT 1 |
+ Format-Table AttributeName, Version, LastOriginatingChangeTime, LastOriginatingChangeDirectoryServerIdentity -AutoSize

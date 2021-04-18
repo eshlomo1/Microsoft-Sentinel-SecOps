@@ -1,0 +1,24 @@
+# Show a user's group memberships and the dates they were added to those groups.
+
+Import-Module ActiveDirectory
+
+$username = "elli-admin"
+$userobj  = Get-ADUser $username
+
+Get-ADUser $userobj.DistinguishedName -Properties memberOf |
+ Select-Object -ExpandProperty memberOf |
+ ForEach-Object {
+    Get-ADReplicationAttributeMetadata $_ -Server localhost -ShowAllLinkedValues | 
+      Where-Object {$_.AttributeName -eq 'member' -and 
+      $_.AttributeValue -eq $userobj.DistinguishedName} |
+      Select-Object FirstOriginatingCreateTime, Object, AttributeValue
+    } | Sort-Object FirstOriginatingCreateTime -Descending | Out-GridView
+
+# one-liners for exploring object
+Get-ADUser 'CN=elli-admin,OU=Migrated,DC=lab,DC=local' -Properties memberOf
+Get-ADGroup 'CN=Domain Admin,OU=Groups,DC=lab,DC=local' -Properties member, members, memberOf
+
+Get-ADReplicationAttributeMetadata 'CN=Domain Admin,OU=Groups,DC=lab,DC=local' -Server localhost -ShowAllLinkedValues | Out-GridView
+
+# Look at the group data again for LastOriginatingDeleteTime
+Get-ADReplicationAttributeMetadata 'CN=Domain Admin,OU=Groups,DC=lab,DC=local' -Server localhost -ShowAllLinkedValues | Out-GridView

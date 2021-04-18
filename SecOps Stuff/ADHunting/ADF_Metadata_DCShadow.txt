@@ -1,0 +1,36 @@
+# overview on all the attributes that are replicated
+repadmin /showattr * CN=schema,CN=configuration,dc=lab,dc=local /subtree /filter:"(&(objectClass=attributeSchema)(!(systemFlags:1.2.840.113556.1.4.803:=1)))" /attrs:attributeSchem
+
+#find all the attributes that are NOT replicated
+repadmin /showattr * CN=schema,CN=configuration,dc=lab,dc=local /subtree /filter:"((&(objectClass=attributeSchema)(systemFlags:1.2.840.113556.1.4.803:=1)))" /attrs:attributeSchema
+
+#replication metadata of this specific object
+repadmin /showobjmeta * "CN=Domain Admins,CN=Users,DC=lab,DC=local"
+
+#filter on event 4729, which indicates that a user has been removed from a security-enabled group
+Get-EventLog -ComputerName DC -LogName 'Security' -InstanceId 4729 -Message 'ATTACK- Name' | Format-List *
+
+#showattr parameter in repadmin for nTSecurityDescriptor
+repadmin /showattr * CN=AdminSDHolder,CN=System,DC=lab,DC=local /attrs:nTSecurityDescriptor,whenchanged
+
+#DCShadow basic secanrio - command example
+
+#servicePrincipalName modified
+repadmin /showobjmeta * "CN=Client, CN=computers,DC=lab,DC=local"
+
+#value behind the servicePrincipalName
+repadmin /showattr * "CN=Client,CN=computers,DC=lab,DC=local" /atts:servicePrincipalName
+
+#TIP:DCShadow attack. It will register a SPN to a non-DC machine account
+
+#filter parameter to run a LDAP query that looks for machine accounts that contains this SPN
+repadmin /showattr * dc=lab,dc=local /subtree /filter:"((&(servicePrincipalName=E3514235-4B06-11D1-AB04-00C04FC2DCD2*)(objectCategory=computer)(objectClass=computer)))" /attrs:servicePrincipalName,cn
+
+#who responsible for executing this attack
+Get-EventLog -ComputerName "DC-Name" -LogName 'Security' -Message "*E3514235-4B06-11D1-AB04-00C04FC2DCD2*" -InstanceId 4742 | Format-List *
+
+$Begin = Get-Date -Date '2/10/2020'
+$End = Get-Date -Date '2/10/2020'
+Get-EventLog -ComputerName "DC-NAME" -LogName 'Security' -InstanceId 4738 -After $Begin -Before $End -Message "*0x10010
+*
+" | Format-List *
