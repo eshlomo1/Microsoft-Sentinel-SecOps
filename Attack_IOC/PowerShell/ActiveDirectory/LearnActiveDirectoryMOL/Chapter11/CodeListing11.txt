@@ -1,0 +1,73 @@
+<#
+ Code listings from:
+  Active Directory Management in a Month of Lunches
+  Chapter 11
+
+ All code supplied "as is" as an example to illustrate the text. No guarantees or warranties are supplied with this code.
+ It is YOUR responsibilty to test if for suitability in YOUR environment.
+ The comments match the section headings in the chapter
+#>
+
+
+# INSTALLING WITH POWERSHELL
+
+Install-WindowsFeature -Name AD-Domain-Services -Confirm:$false
+
+# 11.1.2	Performing the domain controller promotion
+Import-Module ADDSDeployment
+Install-ADDSDomainController `
+-NoGlobalCatalog:$false `
+-CreateDnsDelegation:$false `
+-CriticalReplicationOnly:$false `
+-DatabasePath "C:\Windows\NTDS" `
+-DomainName "Manticore.org" `
+-InstallDns:$true `
+-LogPath "C:\Windows\NTDS" `
+-NoRebootOnCompletion:$false `
+-SiteName "Site1" `
+-SysvolPath "C:\Windows\SYSVOL" `
+-Force:$true
+
+#11.2.1	Creating an RODC
+
+Add-ADDSReadOnlyDomainControllerAccount  `
+-SkipPreChecks `
+-DomainControllerAccountName RODC1 `
+-Credential (Get-Credential) 
+-DomainName Manticore.org `
+-SiteName Site1 `
+-AllowPasswordReplicationAccountName ADMLrodc1 `
+-DelegatedAdministratorAccountName dgreen `
+-InstallDNS `
+-ReplicationSourceDC server02.manticore.org `
+-Force 
+
+Install-ADDSDomainController -Credential (Get-Credential) `
+-CriticalReplicationOnly:$false `
+-DatabasePath "c:\windows\NTDS" -DomainName "manticore.org" `
+-LogPath "C:\windows\NTDS" -SysvolPath "c:\windows\SYSVOL" `
+-UseExistingAccount:$true -NoRebootOnCompletion:$false -Force
+
+#11.2.3	Managing the RODC password policy with PowerShell
+
+Get-ADDomainControllerPasswordReplicationPolicy -Identity RODC1 -Allowed
+Get-ADDomainControllerPasswordReplicationPolicy -Identity RODC1 -Denied
+
+Get-ADAccountResultantPasswordReplicationPolicy `
+-DomainController RODC1 -Identity dgreen
+Allow
+
+Get-ADAccountResultantPasswordReplicationPolicy `
+-DomainController RODC1 -Identity jbloggs
+DenyImplicit
+
+Add-ADDomainControllerPasswordReplicationPolicy -Identity RODC1 `
+-AllowedList 'mgreen'
+
+Get-ADAccountResultantPasswordReplicationPolicy 
+-DomainController RODC1 -Identity mgreen
+Allow
+
+
+
+

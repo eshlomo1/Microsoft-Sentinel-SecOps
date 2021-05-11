@@ -1,0 +1,39 @@
+<#
+ Code listings from:
+  Active Directory Management in a Month of Lunches
+  Chapter 02
+
+ All code supplied "as is" as an example to illustrate the text. No guarantees or warranties are supplied with this code.
+ It is YOUR responsibilty to test if for suitability in YOUR environment.
+ The comments match the section headings in the chapter
+#>
+
+# Creating a new user with PowerShell
+
+$secpass = Read-Host "Password" -AsSecureString 
+New-ADUser -Name "GREEN Dave" -SamAccountName dgreen -UserPrincipalName "dgreen@manticore.org" -AccountPassword $secpass -Path "cn=Users,dc=Manticore,dc=org"  -Enabled:$true
+
+
+# 2.2	User creation from a template
+$secpass = Read-Host "Password" -AsSecureString 
+$user = Get-ADUser -Identity jgreen -Properties memberof, office
+New-ADUser -Name "GREEN Bill" -SamAccountName bgreen -UserPrincipalName "bgreen@manticore.org" -AccountPassword $secpass -Path "cn=Users,dc=Manticore,dc=org" -Enabled:$true -Instance $user
+
+
+#2.3	User creation in bulk
+# see the script - newbulkuser.ps1 - in this folder.
+
+#2.4	Creating managed service accounts
+
+#Windows 2008 R2
+New-ADServiceAccount -Name TestMSA -Path "cn=Managed service accounts,dc=manticore,dc=org"
+
+#Windows 2012
+Add-KdsRootKey –EffectiveImmediately
+New-ADServiceAccount -Path "CN=Managed Service Accounts,DC=Manticore,DC=org" -Name Test2012MSA -DNSHostName Test2012MSA.manticore.org -Enabled $true
+
+#Single system
+New-ADServiceAccount -Path "CN=Managed Service Accounts,DC=Manticore,DC=org" -Name Test2022MSA -Enabled $true -RestrictToSingleComputer
+
+
+

@@ -1,0 +1,38 @@
+<#
+ Code listings from:
+  Active Directory Management in a Month of Lunches
+  Chapter 09
+
+ All code supplied "as is" as an example to illustrate the text. No guarantees or warranties are supplied with this code.
+ It is YOUR responsibilty to test if for suitability in YOUR environment.
+ The comments match the section headings in the chapter
+#>
+
+
+# CREATING A LINK USING POWERSHELL
+Get-GPO -Name ADMlgpo2 | 
+New-GPLink -Target "OU=ADMLunches,DC=manticore,DC=org"
+
+# DISCOVERING LINKS USING POWERSHELL
+Get-GPInheritance -Target "OU=ADMLunches,DC=manticore,DC=org"
+
+$gpos = Get-GPInheritance -Target "OU=ADMLunches,DC=manticore,DC=org"
+$linked = $gpos.GpoLinks | select -ExpandProperty DisplayName
+$gpos | select -ExpandProperty GpoLinks
+$gpos | select -ExpandProperty InheritedGpoLinks |where DisplayName -NotIn $linked 
+
+
+Get-GPInheritance -Target "OU=ADMLunches,DC=manticore,DC=org" |select -ExpandProperty InheritedGpoLinks |Format-Table DisplayName, Order, Target -AutoSize
+
+# DELETING A GPO USING POWERSHELL
+Remove-GPO -Name ADMLtest2
+
+# UNLINKING A GPO USING POWERSHELL
+Remove-GPLink -Name ADMLgpo2 -Target "OU=ADMLunches,DC=Manticore,DC=org"
+
+
+# 9.4	Customizing GPO Refresh settings
+gpupdate
+
+gpupdate /Target:Computer
+gpupdate /Target:User

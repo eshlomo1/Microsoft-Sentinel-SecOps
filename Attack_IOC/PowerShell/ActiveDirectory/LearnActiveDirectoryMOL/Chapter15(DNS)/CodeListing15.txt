@@ -1,0 +1,101 @@
+<#
+ Code listings from:
+  Active Directory Management in a Month of Lunches
+  Chapter 15
+
+ All code supplied "as is" as an example to illustrate the text. No guarantees or warranties are supplied with this code.
+ It is YOUR responsibilty to test if for suitability in YOUR environment.
+ The comments match the section headings in the chapter
+#>
+
+# 15.2.1	Viewing DNS server settings
+Get-DnsServer -ComputerName server02
+
+# 15.2.2	Creating zones
+
+# forward zone
+Add-DnsServerPrimaryZone -Name "admldns.test" –ComputerName server02  -ReplicationScope "Domain" –PassThru
+
+# reverse zone
+Add-DnsServerPrimaryZone -NetworkID "192.168.175.0/24" –ComputerName server02  -ReplicationScope "Domain"
+
+# foward zone with WMI
+Invoke-WmiMethod –ComputerName server02 –Namespace root\MicrosoftDNS –Class MicrosoftDNS_Zone –Name CreateZone –ArgumentList $null, $null, $true, $null, ‘admldns.test’, 0
+
+#reverse zone with WMI
+Invoke-WmiMethod –ComputerName server02 –Namespace root\MicrosoftDNS –Class MicrosoftDNS_Zone –Name CreateZone –ArgumentList $null, $null, $true, $null, ‘175.168.192.in-addr.arpa’, 0
+
+
+# 15.2.3	Creating forwarders
+
+# conditional forwarder
+Add-DnsServerConditionalForwarderZone -Name "morelunches.com" -ReplicationScope "Forest" –MasterServers 172.23.90.124, 172.23.90.125
+
+# general forwarder
+Add-DnsServerForwarder -IPAddress 54.65.76.87 –PassThru
+
+
+# 15.3.1	Viewing records
+
+# forward zone
+Get-DnsServerResourceRecord –ZoneName ‘admldns.test’  –ComputerName server02
+
+# reverse zone
+Get-DnsServerResourceRecord –ZoneName ‘175.168.192.in-addr.arpa’  –ComputerName server02
+
+# single machine
+Get-DnsServerResourceRecord –Name “ADMLServer01” –ZoneName ‘admldns.test’  –ComputerName server02
+
+Get-DnsServerResourceRecord –Name ‘54’ –ZoneName ‘175.168.192.in-addr.arpa’  –ComputerName server02
+
+# using WMI
+Get-WmiObject –NameSpace ‘root\MicrosoftDNS’  -Class Microsoft_Atype –ComputerName server02 –Filter “ContainerName = ‘admldns.test’” |
+Select OwnerName, IPAddress
+
+Get-WmiObject -Namespace root\MicrosoftDNS -Class MicrosoftDNS_PTRType -Filter "ContainerName  = '175.168.192.in-addr.arpa'" | 
+select OwnerName, RecordData
+
+
+# 15.3.2	Adding records
+
+# A type record
+Add-DnsServerResourceRecordA –Name “ADMLServer01” –ZoneName ‘admldns.test’  -IPv4Address ‘192.168.175.54’ –ComputerName server02
+
+# PTR record
+Add-DnsServerResourceRecordPtr –Name ‘54’ –ZoneName “175.168.192.in-addr.arpa” –PtrDomainName  ‘ADMLServer01.admldns.test’  –ComputerName server02
+
+#using WMI
+Invoke-WmiMethod -Namespace root\MicrosoftDNS -Class MicrosoftDNS_AType -Name CreateInstanceFromPropertyData -ArgumentList "admldns.test", server02, "192.168.175.55", "ADMLServer02.admldns.test"   
+
+Invoke-WmiMethod -Namespace root\MicrosoftDNS -Class MicrosoftDNS_PTRType -Name CreateInstanceFromPropertyData -ArgumentList "175.168.192.in-addr.arpa", 'server02', '55.175.168.192.in-addr.arpa', "ADMLServer02.admldns.test"   
+
+#15.3.3	Deleting recordsget
+
+Remove-DnsServerResourceRecord -ZoneName admldns.test -Name ADMLserver01 -RRType A 
+
+Remove-DnsServerResourceRecord -ZoneName 175.168.192.in-addr.arpa -Name 54 -RRType PTR
+
+#Using WMI
+
+Get-WmiObject -Namespace root\MicrosoftDNS -Class MicrosoftDNS_AType -Filter "OwnerName  = 'ADMLServer01.admldns.test'" | 
+Remove-WmiObject 
+
+Get-WmiObject -Namespace root\MicrosoftDNS -Class MicrosoftDNS_PTRType -Filter "OwnerName  = '54.175.168.192.in-addr.arpa'" | 
+Remove-WmiObject 
+
+
+# 15.4.1	Testing systems can find a DNS server
+
+Get-WmiObject -Class Win32_NetworkAdapterConfiguration -Filter "IPenabled=$true" | 
+select DNSDomain, DNSHostName, DNSServerSearchOrder 
+
+Test-Connection -ComputerName 10.10.54.201 -Quiet
+Resolve-DnsName -Name $env:COMPUTERNAME -Server 10.10.54.201
+
+Resolve-DnsName -Name 10.10.54.201 -Server 10.10.54.201  
+
+
+
+
+
+

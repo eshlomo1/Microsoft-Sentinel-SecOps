@@ -1,0 +1,36 @@
+<#
+ Code listings from:
+  Active Directory Management in a Month of Lunches
+  Chapter 04
+
+ All code supplied "as is" as an example to illustrate the text. No guarantees or warranties are supplied with this code.
+ It is YOUR responsibilty to test if for suitability in YOUR environment.
+ The comments match the section headings in the chapter
+#>
+
+# 4.2.1	Creating  groups
+CREATING A GROUP WITH POWERSHELL
+New-ADGroup -Name PStest -Path "CN=Users,DC=Manticore,DC=org" -GroupCategory Security -GroupScope Global -Description "Test group for AD Lunches"
+
+# 4.2.2	Changing group scope
+Set-ADGroup -Identity ADL-group1 -GroupScope Universal
+Set-ADGroup -Identity ADL-group3 -GroupScope Universal
+Set-ADGroup -Identity ADL-group3 -GroupScope DomainLocal
+
+# 4.2.3	Deleting a group
+Remove-ADGroup -Identity ADL-Test3 -Confirm:$false
+
+# 4.3.2	Using PowerShell to manage group membership
+
+Add-ADGroupMember -Identity ADL-group1 -Members "CN=GREEN Bill,CN=Users,DC=Manticore,DC=org"
+
+Add-ADGroupMember -Identity ADL-group1 -Members (Get-ADUser -LDAPFilter "(Name=Green Bill)")
+Add-ADGroupMember -Identity ADL-group1 -Members (Get-ADUser -Filter {Name -eq 'Green Bill')
+
+Add-ADGroupMember -Identity ADL-group1 -Members (Get-ADUser Get-ADUser –Identity bgreen)
+
+Add-ADGroupMember -Identity PStest -Members (Get-ADUser -LDAPFilter "(sn=Green)") 
+
+Remove-ADGroupMember -Identity ADL-group1 -Members bgreen -Confirm:$false
+Remove-ADGroupMember -Identity ADL-group1 -Members (Get-ADUser -LDAPFilter "(Name=Green Bill)") -Confirm:$false
+

@@ -1,0 +1,71 @@
+<#
+ Code listings from:
+  Active Directory Management in a Month of Lunches
+  Chapter 19
+
+ All code supplied "as is" as an example to illustrate the text. No guarantees or warranties are supplied with this code.
+ It is YOUR responsibilty to test if for suitability in YOUR environment.
+ The comments match the section headings in the chapter
+#>
+
+# 19.1.1	Logon problems – many users
+#FIRST TEST: PING THE DOMAIN CONTROLLER
+
+Test-Connection –ComputerName server02
+
+# SECOND TEST: MAKE SURE THE REQUIRED SERVICES ARE RUNNING
+Get-Service –Name NTDS –ComputerName server02
+
+#THIRD TEST: PERFORM AN AD LOOKUP
+Get-ADUser –Identity "richard" –Server server02
+
+#19.1.2	One user can’t logon
+Get-WmiObject –Class Win32_NetworkAdapterConfiguration –Filter “IPEnabled=$true” –ComputerName testpc27 | 
+select IPAddress, IPSubnet, DefaultIPGateway, DNSServerSearchOrder, DHCPEnabled
+
+#19.1.3	Logon scripts
+#FIRST TEST: CHECK LOGON SCRIPT SETTINGS IN AD
+Get-ADUser –Identity “jgreen” –Properties scriptpath
+
+#SECOND TEST: CHECK LOGON SCRIPT EXISTS
+Get-WmiObject –Class Win32_Share –ComputerName server02
+
+#19.2.1	Logon workstation restrictions
+
+#LIMITING THE WORKSTATIONS A USER CAN LOGON TO
+Set-ADUser -Identity jgreen -LogonWorkstations "Test01,Test02,Test03"
+Get-ADUser -Identity jgreen -Properties userWorkstations
+
+#LIMITING THE AMOUNT OF TIME A USER CAN BE LOGGED IN FOR
+Get-ADUser -Identity jgreen -Properties logonHours 
+
+# 19.2.2	Failure to discover a domain controller
+#TEST THE SRV RECORDS
+Get-DnsServerResourceRecord -ZoneName _msdcs.Manticore.org -ComputerName server02 -RRType SRV |    
+where HostName -like "*Site1*" | Format-Table -AutoSize –Wrap
+
+#19.3.1	Replication data
+#GET DOMAIN CONTROLLERS IN AN AD SITE
+Get-ADComputer -SearchBase "OU=Domain Controllers,DC=Manticore,DC=org" -Filter * |
+foreach {     
+  Get-ADDomainController -Identity $_.DNSHostName  
+ } |  where Site -eq 'Site1'                                    
+
+
+#19.3.2	Event logs
+#FILTER BY DATE
+Get-EventLog –LogName ‘Directory Service’ –After (Get-Date).AddDays(-3) –ComputerName server02  
+
+#FILTER BY EVENT TYPE
+Get-EventLog –LogName ‘Directory Service’ –After (Get-Date).AddDays(-3) –EntryType Error  –ComputerName server02
+
+#FILTER ON DATA SOURCE
+Get-EventLog –LogName ‘Directory Service’ –After (Get-Date).AddDays(-3) –EntryType Error -Source ‘NTDS Replication’ –ComputerName server02
+
+Get-EventLog –LogName ‘Directory Service’ –After (Get-Date).AddDays(-3) –EntryType Error -Source ‘NTDS Replication’ –ComputerName server02 |
+Format-Table Index, Message –Autosize -Wrap
+
+
+
+
+

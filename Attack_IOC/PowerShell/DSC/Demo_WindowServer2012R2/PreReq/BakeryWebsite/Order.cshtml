@@ -1,0 +1,115 @@
+﻿@{
+    Page.Title = "Place Your Order";
+
+    var db = Database.Open("bakery");
+    var productId = UrlData[0].AsInt();
+    var product = db.QuerySingle("SELECT * FROM PRODUCTS WHERE ID = @0", productId);
+
+    if (product == null) {
+        Response.Redirect("~/");
+    }
+
+    if (IsPost) {
+        var email = Request["orderEmail"];
+        if (email.IsEmpty()) {
+            ModelState.AddError("orderEmail", "You must specify an email address.");
+        }
+
+        var shipping = Request["orderShipping"];
+        if (shipping.IsEmpty()) {
+            ModelState.AddError("orderShipping", "You must specify a shipping address.");
+        }
+
+        //If there is no error try to process order
+        if (ModelState.Count == 0) {
+            var body = "Thank you, we have received your order for " + Request["orderQty"] + " unit(s) of " + product.Name + "!<br/>";
+            var orderShipping = Request["orderShipping"];
+            var customerEmail = Request["orderEmail"];
+            if (!orderShipping.IsEmpty()) {
+                //Replace carriage returns with HTML breaks for HTML mail
+                var formattedOrder = orderShipping.Replace("\r\n", "<br/>");
+                body += "Your address is: <br/>" + formattedOrder + "<br/>";
+            }
+            body += "Your total is $" + product.Price * Request["orderQty"].AsDecimal() +".<br/>";
+            body += "We will contact you if we have questions about your order.  Thanks!<br/>";
+
+            //SMTP Configuration for Hotmail
+            WebMail.SmtpServer = "smtp.live.com";
+            WebMail.SmtpPort = 25;
+            WebMail.EnableSsl = true;
+
+            //Enter your Hotmail credentials for UserName/Password and a "From" address for the e-mail
+            WebMail.UserName = "";
+            WebMail.Password = "";
+            WebMail.From = "";
+
+            if (WebMail.UserName.IsEmpty() || WebMail.Password.IsEmpty() || WebMail.From.IsEmpty()) {
+                Response.Redirect("~/OrderSuccess?NoEmail=1");
+            } else {
+                try {
+                    WebMail.Send(to: customerEmail, subject: "Fourth Coffee - New Order", body: body);
+                    Response.Redirect("~/OrderSuccess");
+                } catch {
+                    ModelState.AddFormError("There was an error and your order could not be processed at this time");
+                }
+            }
+        }
+    }
+}
+<ol id="orderProcess">
+    <li><span class="step-number">1</span>Choose Item</li>
+    <li class="current"><span class="step-number">2</span>Details &amp; Submit</li>
+    <li><span class="step-number">3</span>Receipt</li>
+</ol>
+<h1>Place Your Order: @product.Name</h1>
+@Html.ValidationSummary(excludeFieldErrors: true)
+<form action="" method="post">
+    <fieldset class="no-legend">
+        <legend>Place Your Order</legend>
+        <img class="product-image order-image" src="@Href("~/Images/Products/Thumbnails/" + product.ImageName)" alt="Image of @product.Name"/>
+        <ol>
+            <li class="email">
+                <label for="orderEmail">Your Email Address</label>
+                <input type="text" id="orderEmail" name="orderEmail"/>
+                @Html.ValidationMessage("orderEmail")
+            </li>
+            <li class="shiping">
+                <label for="orderShipping">Shipping Address</label>
+                <textarea rows="4" cols="20" id="orderShipping" name="orderShipping"></textarea>
+                @Html.ValidationMessage("orderShipping")
+            </li>
+            <li class="quantity">
+                <label for="orderQty">Quantity</label>
+                <input type="text" id="orderQty" name="orderQty" value="1"/>
+                x
+                <span id="orderPrice">@string.Format("{0:f}", product.Price)</span>
+                =
+                <span id="orderTotal">@string.Format("{0:f}", product.Price)</span>
+            </li>
+        </ol>
+        <p class="actions">
+            <input type="hidden" name="ProductId" value="@product.Id" />
+            <input type="submit" value="Place Order"/>
+        </p>
+    </fieldset>
+</form>
+
+<script src="http://ajax.microsoft.com/ajax/jquery/jquery-1.4.2.js" type="text/javascript"></script> 
+<script type="text/javascript">
+    $(function() {        
+        var price = parseFloat($("#orderPrice").text()).toFixed(2),
+            total = $("#orderTotal"),
+            orderQty = $("#orderQty");
+
+        orderQty.change(function() {
+            var quantity = parseInt(orderQty.val());
+            if(!quantity || quantity < 1) {
+                orderQty.val(1);
+                quantity = 1;
+            } else if(quantity.toString() !== orderQty.val()){
+                orderQty.val(quantity);
+            }
+            total.text("$" + (price * quantity).toFixed(2));
+        });
+    });
+</script>

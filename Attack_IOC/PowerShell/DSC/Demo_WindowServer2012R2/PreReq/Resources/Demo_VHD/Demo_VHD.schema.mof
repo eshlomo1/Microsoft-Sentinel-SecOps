@@ -1,0 +1,13 @@
+[version("1.0.0"), FriendlyName("VHD")] 
+class Demo_VHD : MSFT_BaseResourceConfiguration
+{
+  [Key] string Name;
+  [write] string Path;
+  [write] string ParentPath;
+  [write,ValueMap{"Present","Absent"},Values{"Present", "Absent"}] string Ensure;
+  [read] string Format;
+  [read] string Type;
+  [read] uint32 Size;
+  [read] uint32 TotalSize;
+  [read] boolean Attached;
+};

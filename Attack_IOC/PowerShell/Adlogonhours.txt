@@ -1,0 +1,8 @@
+$users = Get-Content c:\userlist.txt
+
+$results=@()
+ForEach($PSItem in $users)
+{
+            $results += ( Get-ADUser -Filter 'Name -like $PSItem' -Properties * |Convert-ADLogonHours -NoWarnings )
+}
+$results | export-csv "adlogon.csv" -NoTypeInformation
