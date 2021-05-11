@@ -1,0 +1,48 @@
+### Darkside Ransomware Tactics, Techniques, and Procedures
+On August 8, 2020 the operators of DarkSide initially announced their malware in a press release on the dark web and in November.
+Darksupp announced the launch of a recruitment effort for affiliates.
+
+
+### IOC List
+
+acer.exe	979692cd7fc638beea6e9d68c752f360	c511ae4d80aaa281c610190aa13630de61ca714c	0a0c225f0e5ee941a79f2b7701f1285e4975a2859eb4d025d96d9e366e81abb9	https://www.virustotal.com/gui/file/0a0c225f0e5ee941a79f2b7701f1285e4975a2859eb4d025d96d9e366e81abb9/details
+151fbd6c299e734f7853497bd083abfa29f8c186a9db31dbe330ace2d35660d5	9d418ecc0f3bf45029263b0944236884	eeb28144f39b275ee1ec008859e80f215710dc57	151fbd6c299e734f7853497bd083abfa29f8c186a9db31dbe330ace2d35660d5	https://www.virustotal.com/gui/file/151fbd6c299e734f7853497bd083abfa29f8c186a9db31dbe330ace2d35660d5/detection
+N/A	04fde4340cc79cd9e61340d4c1e8ddfb	88fc623483f7ffe57f986ed10789e6723083fcd8	8cfd28911878af048fb96b6cc0b9da770542576d5c2b20b193c3cfc4bde4d3bc	https://www.virustotal.com/gui/file/8cfd28911878af048fb96b6cc0b9da770542576d5c2b20b193c3cfc4bde4d3bc/details
+N/A	f587adbd83ff3f4d2985453cd45c7ab1	2715340f82426f840cf7e460f53a36fc3aad52aa	156335b95ba216456f1ac0894b7b9d6ad95404ac7df447940f21646ca0090673	https://www.virustotal.com/gui/file/156335b95ba216456f1ac0894b7b9d6ad95404ac7df447940f21646ca0090673/detection
+
+### Campaign IOC
+
+#### Path
+
+Indicator	Role
+C:\Windows\IME\azure	File path of DC where Darkside payload was staged.
+F:\temp\	File path of staged 7zip archives (.7z) prior to exfiltration.
+F:\temp\1\	File path of staged 7zip archives (.7z) prior to exfiltration.
+F:\temp\hr\	File path of staged 7zip archives (.7z) prior to exfiltration.
+\Windows\SYSVOL\domain\Policies\{L0NGMGU1D}\User\Preferences\ScheduledTasks	Path of Scheduled Task on Domain Controller for deployment of Darkside payload via Group Policy.
+
+#### FileNames
+
+Indicator	Role
+azure_agent.exe.exe	Darkside Payload
+README.3a43168b.TXT	Darkside Ransomware Note – README.{random_string}.TXT
+enc.exe	Darkside Payload
+idfoodsf.exe	Darkside Payload
+
+#####  Hashes
+
+6d134cdf470f03707ad481b617e67b9018f92f72a0e2fb3e6cc9f2ab17ac1439	Darkside Payload
+06cfe7f5d88e82f7adda6d8333ca8b302debb22904c68a942188be5730e9b3c8	Darkside Payload
+243dff06fc80a049f4fb37292f8b8def0fce29768f345c88ee10699e22b0ae60	Darkside Payload
+0839aabe5fd63b16844a27b3c586c02a044d119010a1a40ee4035501c34eae0d	Darkside Payload
+
+#### Domain 
+
+Indicator	Role
+www[.]privatlab[.]com	Manual Data Exfiltration – Cloud Upload
+www[.]mega[.]nz	Manual Data Exfiltration – Cloud Upload
+
+Bitcoin Wallet Address - bc1qkk8z69uxkrxdeuwlkvlk89p7qnr6cefa4aeq7p
+
+Leak Site - hxxps://Darksidedxcftmqa[.]onion
+
