@@ -1,0 +1,12 @@
+//Count number of failed authentication 
+let GetFailedAuth = (startTime: datetime, endTime:datetime, v_Vm:string, v_SourceIp:string){
+SecurityEvent
+| where TimeGenerated between (startTime .. endTime)
+| where EventID == "4625"
+| where AccountType == "User"
+| extend _Account = trim(@'[^\w]+', Account)
+| where Computer contains v_Vm
+| where v_SourceIp contains IpAddress
+| count
+};
+GetFailedAuth(datetime('2021-01-13T17:04:22')
