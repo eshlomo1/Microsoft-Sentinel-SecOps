@@ -1,0 +1,23 @@
+// File Exfiltration
+let threshold = 5m;
+let timerange = 7d;
+let StorageData =
+union
+StorageFileLogs,
+StorageBlobLogs;
+StorageData
+| where TimeGenerated > ago(timerange)
+| where StatusText =~ "Success"
+| where OperationName =~ "PutBlob" or OperationName =~ "PutRange"
+| extend Uri = tostring(split(Uri, "?", 0)[0])
+| join (
+    StorageData
+    | where TimeGenerated > ago(timerange)
+    | where StatusText =~ "Success"
+    | where OperationName =~ "DeleteBlob" or OperationName =~ "DeleteFile"
+    | extend Uri = tostring(split(Uri, "?", 0)[0])
+    | project OperationName, DeletedTime=TimeGenerated, Uri
+) on Uri
+| project TimeGenerated, DeletedTime, OperationName, OperationName1, Uri, CallerIpAddress, UserAgentHeader, ResponseMd5, AccountName
+| extend windowEnd = TimeGenerated+5m 
+| where DeletedTime between (TimeGenerated .. windowEnd)
