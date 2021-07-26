@@ -1,0 +1,6 @@
+// Search for Azure activity table for the storage account and action such as regenerating keys. 
+// It uses extend operator with who made the action and storage account name and then project the information
+AzureActivity
+| where Properties has "Microsoft.Storage/storageAccounts/regenerateKey/action"
+| extend WhoDidIt = Caller, StorageAccountName = tostring(parse_json(Properties).resource)
+| project WhoDidIt, StorageAccountName, ResourceGroup, _ResourceId, CallerIpAddress, EventSubmissionTimestamp
