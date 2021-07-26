@@ -1,0 +1,35 @@
+// Extracting and Preparing File Upload Data
+union StorageFileLogs,StorageBlobLogs 
+| where TimeGenerated > ago(5d)
+//File upload operations
+| where OperationName =~ "PutBlob" or OperationName =~ "PutRange"
+//Parse out the uploader IP
+| extend ClientIP = tostring(split(CallerIpAddress, ":", 0)[0])
+//Extract the filename from the Uri
+| extend FileName = extract(@"\/([\w\-. ]+)\?", 1, Uri)
+//Base64 decode the MD5 filehash, we will encounter non-ascii hex so string operations don't work
+//We can work around this by making it an array then converting it to hex from an int
+| extend base64Char = base64_decode_toarray(ResponseMd5)
+| mv-expand base64Char
+| extend hexChar = tohex(toint(base64Char))
+| extend hexChar = iff(strlen(hexChar) < 2, strcat("0", hexChar), hexChar)
+| extend SourceTable = iff(OperationName has "range", "StorageFileLogs", "StorageBlobLogs")
+| summarize make_list(hexChar) by CorrelationId, ResponseMd5, FileName, AccountName, TimeGenerated, RequestBodySize, ClientIP, SourceTable
+| extend Md5Hash = strcat_array(list_hexChar, "")
+
+//Pack the file information the summarise into a ClientIP row
+
+| extend p = pack("FileName", FileName, "FileSize", RequestBodySize, "Md5Hash", Md5Hash, "Time", TimeGenerated, "SourceTable", SourceTable)
+| summarize UploadedFileInfo=make_list(p), FilesUploaded=count() by ClientIP
+| join kind=leftouter (
+        union
+        StorageFileLogs,
+        StorageBlobLogs
+        | where TimeGenerated > ago(7d)
+        | where OperationName == "DeleteFile" or OperationName == "DeleteBlob"
+        | extend ClientIP = tostring(split(CallerIpAddress, ":", 0)[0])
+        | extend FileName = extract(@"\/([\w\-. ]+)\?", 1, Uri)
+        | extend SourceTable = iff(OperationName has "range", "StorageFileLogs", "StorageBlobLogs")
+        | extend p = pack("FileName", FileName, "Time", TimeGenerated, "SourceTable", SourceTable)
+        | summarize DeletedFileInfo=make_list(p), FilesDeleted=count() by ClientIP
+) on ClientIP
