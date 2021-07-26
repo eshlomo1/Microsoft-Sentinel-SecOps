@@ -3,4 +3,4 @@
 AzureActivity
 | where Properties has "Microsoft.Storage/storageAccounts/regenerateKey/action"
 | extend WhoDidIt = Caller, StorageAccountName = tostring(parse_json(Properties).resource)
-| project WhoDidIt, StorageAccountName, ResourceGroup, _ResourceId, CallerIpAddress, EventSubmissionTimestamp
+| project TimeGenerated, StorageAccountName, WhoDidIt,ResourceGroup, _ResourceId, CallerIpAddress, EventSubmissionTimestamp
