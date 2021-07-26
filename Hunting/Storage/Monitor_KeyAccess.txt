@@ -1,6 +1,12 @@
 //Monitor keys access actions on a storage account.
 //The query uses extend operator with who made the action, storage account name and then displayed the information with a project 
+
 AzureActivity
 | where Properties has "Microsoft.Storage/storageAccounts/listKeys/action"
-| extend WhoDidIt = Caller, StorageAccountName = tostring(parse_json(Properties).resource)
-| project TimeGenerated, StorageAccountName, WhoDidIt,ResourceGroup, _ResourceId, CallerIpAddress, EventSubmissionTimestamp
+| extend WhoMade = Caller, StorageAccountName = tostring(parse_json(Properties).resource)
+| project TimeGenerated, StorageAccountName, WhoMade, ResourceGroup, _ResourceId, CallerIpAddress, EventSubmissionTimestamp
+
+// Enrichment for Hunting
+// Account | Name = WhoMade
+// IP | Address = CallerIpAddress
+// Azure Reources | Resourceid = _ResourceId
