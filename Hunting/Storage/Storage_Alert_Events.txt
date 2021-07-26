@@ -1,0 +1,24 @@
+// Collect the alert events
+// The query below will extract the IP address and file information from the Entities field and will then re-join this information into a single row
+let alertData = SecurityAlert
+| where TimeGenerated > ago(7d)
+| where DisplayName has "Potential malware uploaded to"
+| extend Entities = parse_json(Entities)
+| mv-expand Entities;
+//Parse the IP address data
+let ipData = alertData
+| where Entities['Type'] =~ "ip"
+| extend AttackerIP = tostring(Entities['Address'])
+| extend AttackerCountry = tostring(Entities['Location']['CountryName']);
+//Parse the file data
+let FileData = alertData
+| where Entities['Type'] =~ "file"
+| extend MaliciousFileDirectory = tostring(Entities['Directory'])
+| extend MaliciousFileName = tostring(Entities['Name'])
+| extend MaliciousFileHashes = tostring(Entities['FileHashes']);
+//Combine the File and IP data together
+ipData
+| join (FileData) on VendorOriginalId
+| summarize by TimeGenerated, AttackerIP, AttackerCountry, DisplayName, ResourceId, AlertType, MaliciousFileDirectory, MaliciousFileName, MaliciousFileHashes
+//Create a type column so we can track if it was a File storage or blob storage upload
+| extend type = iff(DisplayName has "file", "File", "Blob")
