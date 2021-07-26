@@ -1,0 +1,13 @@
+// Mass File Deletion
+let deleteThreshold = 3;
+let deleteWindow = 10min;
+union
+StorageFileLogs,
+StorageBlobLogs
+| where TimeGenerated > ago(3d)
+| where StatusText =~ "Success"
+| where OperationName =~ "DeleteBlob" or OperationName =~ "DeleteFile"
+| extend CallerIpAddress = tostring(split(CallerIpAddress, ":", 0)[0])
+| summarize dcount(Uri) by bin(TimeGenerated, deleteWindow), CallerIpAddress, UserAgentHeader, AccountName
+| where dcount_Uri >= deleteThreshold
+| project TimeGenerated, IPCustomEntity=CallerIpAddress, UserAgentHeader, FilesDeleted=dcount_Uri, AccountName
