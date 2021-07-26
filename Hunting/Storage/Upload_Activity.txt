@@ -1,0 +1,5 @@
+// File upload activity events with specific operation: PutBlob and PutRange
+union AzureActivity, StorageFileLogs, StorageBlobLogs
+| where OperationName =~ "PutBlob" or OperationName =~ "PutRange"
+| extend WhoMade = Caller, StorageAccountName = tostring(parse_json(Properties).resource)
+| project TimeGenerated, AccountName, Uri, ResponseMd5, WhoMade, Protocol, StatusText, DurationMs, CallerIpAddress, UserAgentHeader, Type
