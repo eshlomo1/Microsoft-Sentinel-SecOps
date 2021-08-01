@@ -33,3 +33,9 @@ DeviceFileEvents
 
 DeviceProcessEvents 
 | where ((InitiatingProcessCommandLine contains 'Notification_Suppress /t REG_DWORD /d 1 /F') and (FolderPath endswith @'\\reg.exe'))
+
+
+// More artifacts
+//REG:	HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Run, HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Run\random-generated-letters, HKCU\SOFTWARE\LockBit
+//Ransom-note:	Restore-My-Files.txt
+//Network IOC’s: Lockbitks2tvnmwk[.]onion, Ocsp.usertrust[.]com,Crl.usertrust[.]com
