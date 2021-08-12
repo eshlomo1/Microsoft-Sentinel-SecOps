@@ -1,0 +1,9 @@
+// Detects execution of a ADFIND enumeration
+// Based on the artifacts from https://redcanary.com/threat-detection-report/techniques/domain-trust-discovery/
+DeviceProcessEvents 
+| where ((ProcessCommandLine contains "objectcategory" 
+    or ProcessCommandLine contains "trustdmp" 
+    or ProcessCommandLine contains "dcmodes" 
+    or ProcessCommandLine contains "dclist" 
+    or ProcessCommandLine contains "computers_pwdnotreqd") 
+  and FolderPath endswith "\adfind.exe")
