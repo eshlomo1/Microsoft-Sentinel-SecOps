@@ -5,5 +5,6 @@ DeviceProcessEvents
     or ProcessCommandLine contains "trustdmp" 
     or ProcessCommandLine contains "dcmodes" 
     or ProcessCommandLine contains "dclist" 
+    or ProcessCommandLine contains "domainlist"
     or ProcessCommandLine contains "computers_pwdnotreqd") 
   and FolderPath endswith "\adfind.exe")
