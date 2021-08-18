@@ -1,0 +1,15 @@
+// North Korean Kimsuky (Thallium) threat group recent campaign
+
+union *
+| where (
+(FileHashMd5 =~ '70294ac8b61bfb936334bcb6e6e8cc50' or FileHashMd5 =~ 'ffe39eb91e0247fb13bd8fd8152f61a3' 
+    or FileHashMd5 =~ 'de2a8a728f81d44562bfd3e91c95f002' or FileHashMd5 =~ 'df2ea74328ad43c4225cb6c8aa56f340' 
+    or FileHashMd5 =~ 'a0c7e9dc69e439cb431e6dea9f0d5930' or FileHashMd5 =~ 'a67b0c89812e9517178b8581ff830a38' 
+    or FileHashMd5 =~ '906b43cb893e0a57404c8f17085a1f24' or FileHashMd5 =~ 'be4daa6400a6e417270e17b67a44ca97' 
+    or FileHashMd5 =~ 'aa5a3f19e5f7d15b6af37a4f2c8215ee' or FileHashMd5 =~ '8b1606f4f2df5d95e00411b4057b3da1' 
+    or FileHashMd5 =~ '29b28e79d86e4395e223d44d60b14ff4' or FileHashMd5 =~ 'c9c7d70174e8be8b2cebfeb125be2672' 
+    or FileHashMd5 =~ 'b31aaabc8b39f2854ace7680b34322fe' or FileHashMd5 =~ '6d6399e5e98164e365029a9b141e1646') 
+or (RequestURL =~ 'http://tksRpdl.atwebpages.com' or RequestURL =~ 'http://dktkglrkshqhfn.atwebpages.com' 
+or RequestURL =~ 'http://dkekftks.atwebpages.com' or RequestURL =~ 'http://tktlal2.atwebpages.com' 
+or RequestURL =~ 'http://tktlal3.atwebpages.com' or RequestURL =~ 'http://rhwkdlaktm.atwebpages.com')
+)
