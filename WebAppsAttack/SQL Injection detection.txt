@@ -1,0 +1,13 @@
+// SQL Injection detection via browser and based on payload list
+// Retrieve Payload list from external content 
+let SIPayload = (externaldata(payload:string)
+[@"https://raw.githubusercontent.com/eshlomo1/Azure-Sentinel-4-SecOps/master/WebAppsAttack/si-payload-list.txt" 
+]);
+AppServiceHTTPLogs
+| where TimeGenerated >= ago(5h)
+| where CsHost == "websitee1.azurewebsites.net" // Put your website here
+| where CsUriQuery has_any (SIPayload) // Checking payload list within the uri
+//| project TimeGenerated,CsHost, CsUriQuery, SPort, UserAgent, Cookie, CsMethod // Optional" not required if the lines below exist
+// Optional: Count the amount of query
+| summarize SqlInjectionAttempt = count(CsUriQuery) by CsHost, UserAgent, Cookie
+| where SqlInjectionAttempt > 10
