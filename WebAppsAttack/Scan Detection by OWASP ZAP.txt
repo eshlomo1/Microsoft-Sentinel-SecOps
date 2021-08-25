@@ -1,0 +1,7 @@
+// Scan Detection by OWASP ZAP
+AppServiceHTTPLogs 
+| where TimeGenerated >= ago(1h)
+| summarize WebSite = count(CsHost) by Result,CIp,CsMethod
+| where WebSite > 1000 
+    and Result contains "CallerError" 
+    and CsMethod in ("HEAD","POST")
