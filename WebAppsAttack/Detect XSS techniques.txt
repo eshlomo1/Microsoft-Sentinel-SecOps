@@ -1,0 +1,6 @@
+// Detect XSS techniques
+AzureDiagnostics
+| where ResourceType == "APPLICATIONGATEWAYS"
+| where Category == "ApplicationGatewayFirewallLog"
+| where Message contains "XSS Attack"
+| project Message, details_message_s, details_data_s, clientIp_s, action_s
