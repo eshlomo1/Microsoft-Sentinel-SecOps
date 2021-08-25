@@ -1,0 +1,6 @@
+// Detect SQL injection by rules
+AzureDiagnostics
+| where Category == "ApplicationGatewayFirewallLog" 
+  and action_s == "Matched" 
+  and details_file_s == "rules/REQUEST-942-APPLICATION-ATTACK-SQLI.conf"
+| project hostname_s , requestUri_s , clientIp_s, conditions_destinationIP_s
