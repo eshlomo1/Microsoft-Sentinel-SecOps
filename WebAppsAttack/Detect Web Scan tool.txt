@@ -1,0 +1,6 @@
+// Detect web scanner tool 
+AzureDiagnostics
+| where ResourceType == "APPLICATIONGATEWAYS"
+| where Category == "ApplicationGatewayFirewallLog"
+| where details_message_s in ("nikto","nmap","burpsuite")  // you can add any other scan tool
+| project Message, details_message_s, details_data_s, clientIp_s, action_s
