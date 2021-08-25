@@ -1,4 +1,4 @@
-// SQL Injection detection via browser and based on payload list
+// Detect SQL Injection via browser and based on payload list
 // Retrieve Payload list from external content 
 let SIPayload = (externaldata(payload:string)
 [@"https://raw.githubusercontent.com/eshlomo1/Azure-Sentinel-4-SecOps/master/WebAppsAttack/si-payload-list.txt" 
