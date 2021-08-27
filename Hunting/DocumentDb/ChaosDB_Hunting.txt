@@ -1,0 +1,15 @@
+// Who touch my keys // A query to find a specific actions on a Azure Cosmos DB
+// based on the ChaosDB - A critical Vulnerability in Microsoft Azure Cosmos DB
+let KeyActions = ('regenerateKey');
+let errorCode = ('PreconditionFailed');
+let Operation = dynamic(["Rotate keys","Get Connection Strings"]);
+let ActivityState = ("Succeeded");
+union AzureActivity, AuditLogs
+| extend Key_Message = tostring(parse_json(Properties).message)
+| extend Status_Code = tostring(parse_json(Properties).statusCode)
+| extend displayName_ = tostring(TargetResources[0].displayName)
+| where     
+    Key_Message contains "KeyActions" or 
+    Status_Code has_any (errorCode) or 
+    OperationName has_any (Operation) or 
+    ActivitySubstatus has_any (ActivityState)
