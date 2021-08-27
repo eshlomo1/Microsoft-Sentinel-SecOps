@@ -1,0 +1,54 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "workspace": {
+            "type": "String"
+        }
+    },
+    "resources": [
+        {
+            "id": "[concat(resourceId('Microsoft.OperationalInsights/workspaces/providers', parameters('workspace'), 'Microsoft.SecurityInsights'),'/alertRules/35734b39-336e-4c95-826b-eaf31512e272')]",
+            "name": "[concat(parameters('workspace'),'/Microsoft.SecurityInsights/35734b39-336e-4c95-826b-eaf31512e272')]",
+            "type": "Microsoft.OperationalInsights/workspaces/providers/alertRules",
+            "kind": "Scheduled",
+            "apiVersion": "2021-03-01-preview",
+            "properties": {
+                "displayName": "CHAOSDB",
+                "description": "",
+                "severity": "High",
+                "enabled": true,
+                "query": "// Who touch my keys // A query to find a specific actions on a Azure Cosmos DB\n// based on the ChaosDB - A critical Vulnerability in Microsoft Azure Cosmos DB\nlet KeyActions = ('regenerateKey');\nlet Operation = dynamic([\"Rotate keys\",\"Get Connection Strings\"]);\nlet ActivityState = (\"Succeeded\");\nunion AzureActivity, AuditLogs\n| extend Key_Message = tostring(parse_json(Properties).message)\n| extend Status_Code = tostring(parse_json(Properties).statusCode)\n| extend displayName_ = tostring(TargetResources[0].displayName)\n| where     \n    Key_Message contains \"KeyActions\" or \n    OperationName has_any (Operation) or \n    ActivitySubstatus has_any (ActivityState)\n",
+                "queryFrequency": "PT5H",
+                "queryPeriod": "PT5H",
+                "triggerOperator": "GreaterThan",
+                "triggerThreshold": 0,
+                "suppressionDuration": "PT5H",
+                "suppressionEnabled": false,
+                "tactics": [
+                    "InitialAccess",
+                    "CredentialAccess"
+                ],
+                "alertRuleTemplateName": null,
+                "incidentConfiguration": {
+                    "createIncident": true,
+                    "groupingConfiguration": {
+                        "enabled": false,
+                        "reopenClosedIncident": false,
+                        "lookbackDuration": "PT5H",
+                        "matchingMethod": "AllEntities",
+                        "groupByEntities": [],
+                        "groupByAlertDetails": [],
+                        "groupByCustomDetails": []
+                    }
+                },
+                "eventGroupingSettings": {
+                    "aggregationKind": "SingleAlert"
+                },
+                "alertDetailsOverride": null,
+                "customDetails": null,
+                "entityMappings": null
+            }
+        }
+    ]
+}
