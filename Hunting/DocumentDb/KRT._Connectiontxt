@@ -1,0 +1,4 @@
+// Key Rotation and Connection
+AzureActivity
+| where OperationName in ('Rotate keys','Get Connection Strings')
+| project TimeGenerated, OperationName, ActivityStatus  
