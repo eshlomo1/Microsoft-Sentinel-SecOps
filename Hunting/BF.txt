@@ -1,0 +1,40 @@
+// Brute force attack against Waves portal
+let failureCountThreshold = 5;
+let successCountThreshold = 1;
+let timeRange = 1d;
+let authenticationWindow = 20m;
+syslogs_CL // table name
+| where TimeGenerated >= ago(10d) // time range 
+// Extend Values // the log strcuture need the extend operator to calculated columns or append them to a specific result set
+// Each columns / field / value provide string for later user - a later use can print / project and use for other conditions
+| extend ExternalIPAddress = extract_all(@"((?:[0-9]{1,3}\.){3}[0-9]{1,3})", RawData)[1]
+| extend status=split(RawData, ' ')[10] 
+| extend bytes_sent=split(RawData, ' ')[12]
+| extend request=split(RawData, ' ')[14]
+| extend request2=split(RawData, ' ')[15]
+// Extend Base64 // the based64 must be encoded to make sure we've got the addtional information 
+| extend b64=split(base64_decode_tostring("eyJob3N0IjoiYmV0YW5s=="), '""')
+| extend host_ = tostring(b64[0].host)
+| extend blocked=split(RawData, ' ')[19]
+| extend block_reason=split(RawData, ' ')[20]
+| extend human=split(RawData, ' ')[21]
+| extend country_name=split(RawData, ' ')[25]
+| extend country_code=split(RawData, ' ')[27]
+| extend request_id=split(RawData, ' ')[29]
+| extend request_id=split(RawData, ' ')[31]
+| extend captured_vector=split(RawData, ' ')[33]
+| extend request_time=split(RawData, ' ')[35]
+| extend domain_name=split(RawData, ' ')[41]
+| extend referer=split(RawData, ' ')[45]
+| extend user_agent=split(RawData, ' ')[47]
+// Brute force information
+| summarize StartTimeUtc = min(TimeGenerated), EndTimeUtc = max(TimeGenerated), IPAddress = makeset(IPAddress), makeset(OS), makeset(Browser), makeset(City), 
+    makeset(ResultType), FailureCount = countif(FailureOrSuccess == "Failure"), SuccessCount = countif(FailureOrSuccess == "Success") 
+    by bin(TimeGenerated, authenticationWindow) //,  UserDisplayName,    UserPrincipalName,    AppDisplayName
+| where FailureCount >= failureCountThreshold and SuccessCount >= successCountThreshold
+| mvexpand 
+| extend IPAddress = tostring(IPAddress)
+| extend
+    timestamp = StartTimeUtc,
+    AccountCustomEntity = UserPrincipalName,
+    IPCustomEntity = IPAddress
