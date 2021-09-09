@@ -1,4 +1,4 @@
-// Brute force attack against Waves portal
+// Brute force attack 
 let failureCountThreshold = 5;
 let successCountThreshold = 1;
 let timeRange = 1d;
