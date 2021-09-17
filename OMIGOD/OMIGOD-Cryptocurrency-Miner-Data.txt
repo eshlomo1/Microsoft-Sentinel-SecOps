@@ -30,5 +30,16 @@
 "89.35.39.78"
 
 # Remote URL
-"http://194.38.20.199/kinsing" ,"xmr.ipzse.com","t.amynx.com","pool.t00ls.ru","lsd.systemten.org","lib.pygensim.com",
-"zer0day.ru","mqdsflm.cf","localhost.xyz","kieuanilam.me","bigd1ck.com","bash.shell","aliyun.one"
+"http://194.38.20.199/kinsing",
+"xmr.ipzse.com",
+"t.amynx.com",
+"pool.t00ls.ru",
+"lsd.systemten.org",
+"lib.pygensim.com",
+"zer0day.ru",
+"mqdsflm.cf",
+"localhost.xyz",
+"kieuanilam.me",
+"bigd1ck.com",
+"bash.shell",
+"aliyun.one"
