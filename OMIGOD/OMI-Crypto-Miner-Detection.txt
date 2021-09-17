@@ -1,0 +1,7 @@
+// Azure OMI Crypto Miner Detection
+let OMG = (externaldata(ip:string)
+[@"https://raw.githubusercontent.com/eshlomo1/Azure-Sentinel-4-SecOps/master/OMIGOD/OMIGOD-Cryptocurrency-Miner-Data.txt"]
+| distinct ip
+);
+union DeviceNetworkEvents, AzureDiagnostics, AzureActivity
+| where RemoteIP contains "OMG" and RemoteUrl contains "OMG"
