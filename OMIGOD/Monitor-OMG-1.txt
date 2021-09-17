@@ -1,0 +1,4 @@
+AzureActivity
+| where parse_json(tostring(Properties_d.eventProperties)).defaultLanguageTitle == "Action Required: Open Management Infrastructure (OMI) vulnerabilities within Linux Virtual Machine management extensions "
+| extend ServiceName = tostring(parse_json(tostring(parse_json(tostring(Properties_d.eventProperties)).impactedServices))[0].ServiceName)
+| project TimeGenerated,ServiceName, ActivityStatusValue, OperationNameValue, SubscriptionId
