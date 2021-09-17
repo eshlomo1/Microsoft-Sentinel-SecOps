@@ -1,0 +1,5 @@
+let omigodPath = dynamic(["/opt/omi","/usr/bin/sudo","/opt/microsoft/omsconfig","/opt/microsoft/omsagent",""]);
+VMProcess
+| where ExecutablePath has_any ( omigodPath)
+| where Description contains "Provide limited super user privileges to specific users"
+| project TimeGenerated , Computer, ProductVersion, ExecutablePath, WorkingDirectory, CommandLine, Description
