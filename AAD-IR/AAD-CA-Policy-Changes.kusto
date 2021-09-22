@@ -1,0 +1,5 @@
+// Azure AD Conditional Access policy changes
+AuditLogs 
+| where TimeGenerated >= ago(1d)
+| where Category == "Policy" 
+| project ActivityDateTime, ActivityDisplayName , TargetResources[0].displayName, InitiatedBy.user.userPrincipalName,InitiatedBy.user.roles,InitiatedBy.user.ipAddress
