@@ -37,7 +37,7 @@
 * [HxD](https://mh-nexus.de/en/hxd/) is a carefully designed and fast hex editor which, additionally to raw disk editing and modifying of main memory (RAM), handles files of any size.
 
 
-## Cloud Forensics Tool 
+## Cloud Forensics Tool (iias,saas,paas)
 
 ### Azure
 
@@ -46,7 +46,6 @@
 ### Google Workspace
 
 ### AWS
-
 
 ## Internet Scan Tools
 
@@ -97,4 +96,8 @@
 
 
 ## Malware Analysis
+
+## DevSecOps (AppSec) Forensics 
+
+
 
