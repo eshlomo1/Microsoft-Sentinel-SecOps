@@ -2,7 +2,9 @@
 
 #### When it comes to incident response and Azure Sentinel, the Azure Sentinel is one piece of the puzzle, a big one. Still, we need to make sure that we have got the additional and proper tools to make the whole investigation, analysis, threat hunting, and their actions part of the IR and complete the puzzle.
 
-#### The tools below provide valuable tools for IR, SOC, case management, and other teams. The list will be updated from time to time. The tools can be used as standalone actions but can be part of your SOC team and SIEM solution, including when working with Azure Sentinel.
+#### The tools below provide valuable tools for IR, SOC, case management, and other teams. The tools can be used as standalone actions but can be part of your SOC team and SIEM solution, including when working with Azure Sentinel.
+
+Note: The list will be updated from time to time. 
 
 ## Incident Response 
 
