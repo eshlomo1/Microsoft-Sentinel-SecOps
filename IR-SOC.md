@@ -33,7 +33,6 @@
 * [XAMPP](https://www.apachefriends.org/index.html) allows you to build a web server, DB quickly to perform malware analysis.
 
 * [Beagle](https://github.com/yampelo/beagle) is an Incident response and digital forensics tool which transforms data sources and logs into graphs. Supported data sources include FireEye HX Triages, Windows EVTX files, SysMon logs, and Raw Windows memory images.
-* []()
 
 * [HxD](https://mh-nexus.de/en/hxd/) is a carefully designed and fast hex editor which, additionally to raw disk editing and modifying of main memory (RAM), handles files of any size.
 
