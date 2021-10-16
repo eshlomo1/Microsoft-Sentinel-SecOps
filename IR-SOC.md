@@ -1,8 +1,8 @@
-# Azure Sentinel tools for Incident Response Team 
+# Incident Response tools and others with Azure Sentinel  
 
 #### When it comes to incident response and Azure Sentinel, the Azure Sentinel is one piece of the puzzle, a big one. Still, we need to make sure that we have got the additional and proper tools to make the whole investigation, analysis, threat hunting, and their actions part of the IR and complete the puzzle.
 
-#### The tools below list many valuable tools for IR, SOC, case management, and others. The list will be updated from time to time. 
+#### The tools below list many valuable tools for IR, SOC, case management, and others. The list will be updated from time to time. The tools can be used as standalone actions but can be part of your SOC team, especially when working with Azure Sentinel.
 
 ## Incident Response 
 
@@ -36,7 +36,6 @@
 * []()
 
 * [HxD](https://mh-nexus.de/en/hxd/) HxD is a carefully designed and fast hex editor which, additionally to raw disk editing and modifying of main memory (RAM), handles files of any size.
-
 
 
 ## Cloud Forensics Tool
