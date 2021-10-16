@@ -91,4 +91,4 @@
 
 ## Malware Analysis 
 
-## DevSecOps (AppSec)
+## AppSec (for DevSecOps IR) 
