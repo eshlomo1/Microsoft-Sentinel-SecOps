@@ -37,7 +37,15 @@
 * [HxD](https://mh-nexus.de/en/hxd/) is a carefully designed and fast hex editor which, additionally to raw disk editing and modifying of main memory (RAM), handles files of any size.
 
 
-## Cloud Forensics Tool
+## Cloud Forensics Tool 
+
+### Azure
+
+### M365
+
+### Google Workspace
+
+### AWS
 
 
 ## Internet Scan Tools
@@ -48,6 +56,39 @@
 
 ## Threat Intelligence
 
+* [PhishTank](http://www.phishtank.com/) is a threat intelligence about phishing sites
+
+* [Spamhaus](https://www.spamhaus.org/) tracks spam and related cyber threats such as phishing, malware, and botnets, provides real-time actionable and highly accurate threat intelligence.
+
+* [PhishStats](https://phishstats.info/) is a tool for phishing Statistics.
+
+* [Cisco Talos](https://talosintelligence.com/) is a comprehensive threat intelligence.
+
+* [IPvoid](http://ipvoid.com/) is a tool for discover details about IP addresses, IP blacklist check, whois lookup, dns lookup, ping, and more.
+
+* [Cyren IP](https://www.cyren.com/security-center/cyren-ip-reputation-check-gate) – identifies and tracks IP addresses and ranks them according to their reputation.
+
+* [IPQualityScore](https://www.ipqualityscore.com/ip-reputation-check) is a tool for lookup IP reputation history which could indicate SPAM issues, threats, or elevated IP fraud scores
+
+* [Virustotal](https://virustotal.com/) is a threat intelligence for Files, IPs, URLs from 60+ sources.
+
+* [HetrixTools](https://hetrixtools.com/blacklist-monitor/) Blacklist Monitor your IPs and Domains
+
+* [Metadefender](https://metadefender.opswat.com/?lang=en) Threat intelligence for Files, IPs, URLs, CVE, Domain
+
+* [FireEye OpenIOCs](https://github.com/mandiant/iocs) Contains IOCs related to multiple APTs
+
+* [IntelMQ](https://github.com/certtools/intelmq/) is a tool for collecting and processing security feeds (such as log files)
+
+* [threatfeeds.io](https://threatfeeds.io/) Free and open-source threat intelligence feeds.
+
+* [ThreatMiner](https://www.threatminer.org/) Data mining for threat intelligence
+
+* [VirusShare](https://virusshare.com/) is a collection of malware used for malware analysis and machine learning.
+
+* [Mrlooquer ](https://iocfeed.mrlooquer.com/) improve security by assessing the risk and exposure of public asset inventory.
+
+* [IOC Finder](https://www.fireeye.com/services/freeware/ioc-finder.html) a free tool for collecting host system data and reporting the presence of IOCs.
 
 ## Ticket Management 
 
