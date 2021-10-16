@@ -49,8 +49,6 @@
 
 ## Internet Scan Tools
 
-## Sandbox Tools
-
 ## Threat Intelligence
 
 * [PhishTank](http://www.phishtank.com/) is a threat intelligence about phishing sites
@@ -91,6 +89,6 @@
 
 ## Embrace the RED 
 
-## Malware Analysis
+## Malware Analysis 
 
 ## DevSecOps (AppSec)
