@@ -1,6 +1,6 @@
-# Azure Sentinel tools for Incident Response, Threat HUnting and more
+# Azure Sentinel tools for Incident Response Team 
 
-#### Working with Azure Sentinel is one piece of the puzzle, a big one. Still, you need to make sure that you've got the additional and proper tools to make the whole investigation, analysis, threat hunting, and their actions part of the process IR and complete the puzzle.
+#### When it comes to incident response and Azure Sentinel, the Azure Sentinel is one piece of the puzzle, a big one. Still, we need to make sure that we have got the additional and proper tools to make the whole investigation, analysis, threat hunting, and their actions part of the IR and complete the puzzle.
 
 #### The tools below list many valuable tools for IR, SOC, case management, and others. The list will be updated from time to time. 
 
@@ -42,7 +42,7 @@
 ## Cloud Forensics Tool
 
 
-# Internet Scan Tools
+## Internet Scan Tools
 
 
 ## Sandbox Tools
