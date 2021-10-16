@@ -1,4 +1,4 @@
-# Incident Response tools for IRT and SOC-T
+# Incident Response tools for IRT and SOCT
 
 #### When it comes to incident response and Azure Sentinel, the Azure Sentinel is one piece of the puzzle, a big one. Still, we need to make sure that we have got the additional and proper tools to make the whole investigation, analysis, threat hunting, and their actions part of the IR and complete the puzzle.
 
