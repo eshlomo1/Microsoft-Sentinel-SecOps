@@ -35,7 +35,7 @@
 * [Beagle](https://github.com/yampelo/beagle) is an Incident response and digital forensics tool which transforms data sources and logs into graphs. Supported data sources include FireEye HX Triages, Windows EVTX files, SysMon logs, and Raw Windows memory images.
 * []()
 
-* [HxD](https://mh-nexus.de/en/hxd/) HxD is a carefully designed and fast hex editor which, additionally to raw disk editing and modifying of main memory (RAM), handles files of any size.
+* [HxD](https://mh-nexus.de/en/hxd/) is a carefully designed and fast hex editor which, additionally to raw disk editing and modifying of main memory (RAM), handles files of any size.
 
 
 ## Cloud Forensics Tool
