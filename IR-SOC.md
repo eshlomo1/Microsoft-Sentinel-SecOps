@@ -38,6 +38,7 @@ Note: The list will be updated from time to time.
 
 * [HxD](https://mh-nexus.de/en/hxd/) is a carefully designed and fast hex editor which, additionally to raw disk editing and modifying of main memory (RAM), handles files of any size.
 
+* [ThePhish ](https://github.com/emalderson/ThePhish) is an automated phishing email analysis tool based on TheHive, Cortex and MISP.
 
 ## Cloud Forensics Tool 
 
