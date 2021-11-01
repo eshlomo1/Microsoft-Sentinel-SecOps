@@ -42,20 +42,6 @@ This section should include the following informations
  
 # Structures
 
-## Customers
-This folder includes all the informations related to our customers such as
-
-- Contacts
-  - Names
-  - Phone Number
-  - Email
-- Escalation point
-  - Business hours
-  - Off Hours
-- Account Manager
-- Pre-approved Actions and Threshold
-- Blackout / Brownout schedule
-
 ## Products
 
 ## IRP
