@@ -12,7 +12,7 @@ This section should include the following informations
 - Create Playbooks
 - Plan Exercises
 
-## 2- Detection and Analysis
+## 2- Detection 
 This section should include the following informations
 - Gathering of Information
 - Analyzing the Data
@@ -41,6 +41,7 @@ This section should include the following informations
 
  
 # Structures
+
 ## Customers
 This folder includes all the informations related to our customers such as
 
