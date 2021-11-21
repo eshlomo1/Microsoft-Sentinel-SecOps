@@ -1,0 +1,30 @@
+### The search operator provides a multi-table and multi-column search experience
+### Below search command with specific syntax, paramters and value
+
+// Search everything
+search *
+
+// Search Syntax for specific value, but widely
+search "elli"
+
+// Search for any value. Like the where command with has parameter
+search "*eli*" // can be "*eli*"
+
+// Search specific value in specific tables (sources/connectors)
+search in (SigninLogs, AzureActivity) "elli"
+
+// Search for specific parameters with specific values inside of it. Restricting the match to some columns
+search UserDisplayName:"elli"
+
+search UserDisplayName=="Elli Shlomo" // Same with equal 
+
+// Search with matches regex @"\bElli.*LAP\b"
+search "Elli*Laptop"
+
+// Search for all string comparisons are case-sensitive
+search kind=case_sensitive 
+
+// Search for value in a specific time limit
+search "Elli" and Timestamp >= datetime(2021-11-11)
+
+// Unlike the find operator, the search operator, does not support the following: withsource=, project=, project-smart
