@@ -1,3 +1,5 @@
+Connect-AzAccount
+
 Invoke-WebRequest -Uri 'https://account.blob.core.windows.net/container/azcopy.zip' -OutFile .\azcopy.zip
 Expand-Archive -Path .\azcopy.zip -DestinationPath .\
 Remove-Item -Path .\azcopy.zip
