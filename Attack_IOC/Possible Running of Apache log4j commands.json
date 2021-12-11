@@ -1,0 +1,81 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "workspace": {
+            "type": "String"
+        }
+    },
+    "resources": [
+        {
+            "id": "[concat(resourceId('Microsoft.OperationalInsights/workspaces/providers', parameters('workspace'), 'Microsoft.SecurityInsights'),'/alertRules/6d47add0-fa27-4a46-bdae-8707eb1115c1')]",
+            "name": "[concat(parameters('workspace'),'/Microsoft.SecurityInsights/6d47add0-fa27-4a46-bdae-8707eb1115c1')]",
+            "type": "Microsoft.OperationalInsights/workspaces/providers/alertRules",
+            "kind": "Scheduled",
+            "apiVersion": "2021-09-01-preview",
+            "properties": {
+                "displayName": "Possible Running of Apache log4j  commands",
+                "description": "",
+                "severity": "High",
+                "enabled": true,
+                "query": "let log4jcmd = dynamic([\"jndi:ldap\",\"jndi:dns\",\"jndi:rmi\",\"jndi:corba\",\"jndi:iiop\",\"jndi:nis\",\"jndi:nds\"]);\r\nAzureDiagnostics\r\n| where originalRequestUriWithArgs_s has_any (log4jcmd)\r\n| where userAgent_s has_any (\"curl\", \"wget\")\r\n| summarize Total = count() by originalRequestUriWithArgs_s, userAgent_s, clientIP_s, TimeGenerated, host_s, requestUri_s, httpStatus_d, originalHost_s,listenerName_s\r\n| sort by originalRequestUriWithArgs_s asc, Total desc ",
+                "queryFrequency": "PT1H",
+                "queryPeriod": "PT1H",
+                "triggerOperator": "GreaterThan",
+                "triggerThreshold": 0,
+                "suppressionDuration": "PT5H",
+                "suppressionEnabled": false,
+                "tactics": [
+                    "InitialAccess",
+                    "Execution",
+                    "PrivilegeEscalation"
+                ],
+                "techniques": [],
+                "alertRuleTemplateName": null,
+                "incidentConfiguration": {
+                    "createIncident": true,
+                    "groupingConfiguration": {
+                        "enabled": false,
+                        "reopenClosedIncident": false,
+                        "lookbackDuration": "PT5H",
+                        "matchingMethod": "AllEntities",
+                        "groupByEntities": [],
+                        "groupByAlertDetails": [],
+                        "groupByCustomDetails": []
+                    }
+                },
+                "eventGroupingSettings": {
+                    "aggregationKind": "SingleAlert"
+                },
+                "alertDetailsOverride": null,
+                "customDetails": null,
+                "entityMappings": [
+                    {
+                        "entityType": "IP",
+                        "fieldMappings": [
+                            {
+                                "identifier": "Address",
+                                "columnName": "clientIP_s"
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "id": "[concat(resourceId('Microsoft.OperationalInsights/workspaces/providers', parameters('workspace'), 'Microsoft.SecurityInsights'),'/alertRules/6d47add0-fa27-4a46-bdae-8707eb1115c1/actions/430a9840064f4a9ba7693ccd5ef30a0f')]",
+            "name": "[concat(parameters('workspace'),'/Microsoft.SecurityInsights/6d47add0-fa27-4a46-bdae-8707eb1115c1/430a9840064f4a9ba7693ccd5ef30a0f')]",
+            "type": "Microsoft.OperationalInsights/workspaces/providers/alertRules/actions",
+            "apiVersion": "2021-09-01-preview",
+            "properties": {
+                "ruleId": "[concat(resourceId('Microsoft.OperationalInsights/workspaces/providers', parameters('workspace'), 'Microsoft.SecurityInsights'),'/alertRules/6d47add0-fa27-4a46-bdae-8707eb1115c1')]",
+                "triggerUri": "[listCallbackURL(concat('/subscriptions/0c0c4cf4-12e5-4d96-862a-655e121e073b/resourceGroups/siem-prod-eastus/providers/Microsoft.Logic/workflows/SentinelAlertSlack','/triggers/When_a_response_to_an_Azure_Sentinel_alert_is_triggered'),'2016-06-01').value]",
+                "logicAppResourceId": "/subscriptions/0c0c4cf4-12e5-4d96-862a-655e121e073b/resourceGroups/siem-prod-eastus/providers/Microsoft.Logic/workflows/SentinelAlertSlack",
+                "operatesOn": "Alert"
+            },
+            "dependsOn": [
+                "[concat(resourceId('Microsoft.OperationalInsights/workspaces/providers', parameters('workspace'), 'Microsoft.SecurityInsights'),'/alertRules/6d47add0-fa27-4a46-bdae-8707eb1115c1')]"
+            ]
+        }
+    ]
+}
