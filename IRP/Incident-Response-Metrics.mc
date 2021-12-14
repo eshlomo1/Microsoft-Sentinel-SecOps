@@ -15,8 +15,10 @@
 - Average Time to Detect
 - Average Time to Escalate
 - Average Time to Contain
+- Average Time to Triage
 - Average Time to Expel
 - Average Time to Notify
+- Average Time to Closure
 - Incidents Opened in a given time frame
 - Incidents Closed in a given time frame
 - Count of Incidents per Recommended Mitigation
