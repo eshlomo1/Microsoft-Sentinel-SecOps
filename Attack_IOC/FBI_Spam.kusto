@@ -1,0 +1,9 @@
+EmailEvents // or other email platform table
+| where SenderMailFromDomain contains "ic.fbi.gov"
+| where EmailDirection=="Inbound"
+| project TimeGenerated, DeliveryAction, RecipientEmailAddress, SenderMailFromAddress,SenderIPv4,SenderMailFromDomain,Subject
+
+// Addtional IOC's
+// Sending IP: 153.31.119.142 (http://mx-east-ic.fbi.gov)
+// From: eims@ic.fbi.gov
+// Subject: Urgent: Threat actor in systems
