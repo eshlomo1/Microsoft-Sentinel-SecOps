@@ -1,0 +1,9 @@
+// Sam the Admin - Sam Impersonation - Based CVE-2021-42287/CVE-2021-42278
+// More information: https://exploit.ph/cve-2021-42287-cve-2021-42278-weaponisation.html
+union IdentityDirectoryEvents, Event, SecurityEvent
+| where TimeGenerated >= ago(5d)
+| where EventID in ("35","36","37","38","4662","4741","4781","4783","16990","16991")
+| where ActionType == "SAM Account Name changed"
+| extend FROMSAM = parse_json(AdditionalFields)['FROM SAM Account Name']
+| extend TOSAM = parse_json(AdditionalFields)['TO SAM Account Name']
+| where (FROMSAM has "$" and TOSAM !has "$")
