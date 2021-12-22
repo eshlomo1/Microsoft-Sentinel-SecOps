@@ -2,8 +2,7 @@
     Sam The Admin - Find any computer accounts that have a invalid SamAccountName 
     To run remotely use the combination of Get-WinEvent
     November Update - CVE-2021-42287 and CVE-2021-42278  
-    More information about the Sam the Admin
-    https://exploit.ph/cve-2021-42287-cve-2021-42278-weaponisation.html
+    More information: https://exploit.ph/cve-2021-42287-cve-2021-42278-weaponisation.html
 #>
 $EventIds = @{
     35    = "PAC without attributes"
