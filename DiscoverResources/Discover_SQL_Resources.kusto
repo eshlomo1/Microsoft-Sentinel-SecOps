@@ -1,0 +1,16 @@
+// Azure Resource Graph Explorer
+// Discover SQL Resources
+resources 
+| where type in ('microsoft.sql/servers/databases', 
+'microsoft.sql/managedinstances',
+"microsoft.sql/servers",
+"microsoft.sql/servers/databases",
+"microsoft.sql/servers/elasticpools",
+"microsoft.sqlvirtualmachine/sqlvirtualmachinegroups",
+"microsoft.sqlvirtualmachine/sqlvirtualmachines",
+"microsoft.synapse/workspaces",
+"microsoft.sqlvm/dwvm",
+"microsoft.azurearcdata/postgresinstances",
+"microsoft.azurearcdata/sqlmanagedinstances",
+"microsoft.azuredata/sqlinstances"
+)
