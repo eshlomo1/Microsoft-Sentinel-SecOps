@@ -12,5 +12,9 @@ resources
 "microsoft.sqlvm/dwvm",
 "microsoft.azurearcdata/postgresinstances",
 "microsoft.azurearcdata/sqlmanagedinstances",
-"microsoft.azuredata/sqlinstances"
+"microsoft.azuredata/sqlinstances",
+"microsoft.documentdb/databaseaccounts",
+"microsoft.azurearcdata/postgresinstances",
+"microsoft.azuredata/postgresinstances",
+"microsoft.dbforpostgresql/servers"
 )
