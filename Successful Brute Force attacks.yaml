@@ -1,0 +1,112 @@
+$schema: https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#
+contentVersion: 1.0.0.0
+parameters:
+  workspace:
+    type: String
+resources:
+  - id: "[concat(resourceId('Microsoft.OperationalInsights/workspaces/providers',
+      parameters('workspace'),
+      'Microsoft.SecurityInsights'),'/alertRules/12e52bb7-d36b-4426-b0b2-662922\
+      0e15ed')]"
+    name: "[concat(parameters('workspace'),'/Microsoft.SecurityInsights/12e52bb7-d3\
+      6b-4426-b0b2-6629220e15ed')]"
+    type: Microsoft.OperationalInsights/workspaces/providers/alertRules
+    kind: Scheduled
+    apiVersion: 2021-09-01-preview
+    properties:
+      displayName: Successful Brute Force attacks
+      description: ""
+      severity: High
+      enabled: true
+      query: "// OKTA - Potential Password Spray or Bruteforce \r
+
+        // Successful Brute Force attacks\r
+
+        let Threat = dynamic([\"Password Spray\",\"Brute Force\",\"OKTA
+        Brute Force\"]);\r
+
+        let Severity = dynamic([\"WARN\",\"ERROR\"]);\r
+
+        Okta_CL \r
+
+        | where TimeGenerated >= ago(1d)\r
+
+        | where debugContext_debugData_threatDetections_s has_any
+        (Threat) \r
+
+        \     and severity_s has_any (Severity)\r
+
+        \     and debugContext_debugData_threatSuspected_s == \"true\"\r
+
+        \     and outcome_result_s == \"SUCCESS\"\r
+
+        | project TimeGenerated,actor_id_s, actor_type_s,
+        client_ipAddress_s, eventType_s, severity_s, outcome_reason_s,
+        outcome_result_s,debugContext_debugData_threatSuspected_s,
+        debugContext_debugData_threatDetections_s, displayMessage_s,
+        transaction_type_s, client_geographicalContext_state_s\r
+
+        | summarize IPs = dcount(client_ipAddress_s),
+        Location=make_set(client_geographicalContext_state_s) by actor_id_s\r
+
+        | sort by IPs desc "
+      queryFrequency: PT1H
+      queryPeriod: PT1H
+      triggerOperator: GreaterThan
+      triggerThreshold: 0
+      suppressionDuration: PT5H
+      suppressionEnabled: false
+      tactics:
+        - CredentialAccess
+        - InitialAccess
+      techniques:
+        - T1110
+        - T1189
+      alertRuleTemplateName: null
+      incidentConfiguration:
+        createIncident: true
+        groupingConfiguration:
+          enabled: false
+          reopenClosedIncident: false
+          lookbackDuration: PT5H
+          matchingMethod: AllEntities
+          groupByEntities: []
+          groupByAlertDetails: []
+          groupByCustomDetails: []
+      eventGroupingSettings:
+        aggregationKind: SingleAlert
+      alertDetailsOverride: null
+      customDetails: null
+      entityMappings:
+        - entityType: IP
+          fieldMappings:
+            - identifier: Address
+              columnName: actor_id_s
+        - entityType: Host
+          fieldMappings:
+            - identifier: FullName
+              columnName: Location
+  - id: "[concat(resourceId('Microsoft.OperationalInsights/workspaces/providers',
+      parameters('workspace'),
+      'Microsoft.SecurityInsights'),'/alertRules/12e52bb7-d36b-4426-b0b2-662922\
+      0e15ed/actions/430a9840064f4a9ba7693ccd5ef30a0f')]"
+    name: "[concat(parameters('workspace'),'/Microsoft.SecurityInsights/12e52bb7-d3\
+      6b-4426-b0b2-6629220e15ed/430a9840064f4a9ba7693ccd5ef30a0f')]"
+    type: Microsoft.OperationalInsights/workspaces/providers/alertRules/actions
+    apiVersion: 2021-09-01-preview
+    properties:
+      ruleId: "[concat(resourceId('Microsoft.OperationalInsights/workspaces/providers\
+        ', parameters('workspace'),
+        'Microsoft.SecurityInsights'),'/alertRules/12e52bb7-d36b-4426-b0b2-6629\
+        220e15ed')]"
+      triggerUri: "[listCallbackURL(concat('/subscriptions/0c0c4cf4-12e5-4d96-862a-65\
+        5e121e073b/resourceGroups/siem-prod-eastus/providers/Microsoft.Logic/wo\
+        rkflows/SentinelAlertSlack','/triggers/When_a_response_to_an_Azure_Sent\
+        inel_alert_is_triggered'),'2016-06-01').value]"
+      logicAppResourceId: /subscriptions/0c0c4cf4-12e5-4d96-862a-655e121e073b/resourceGroups/siem-prod-eastus/providers/Microsoft.Logic/workflows/SentinelAlertSlack
+      operatesOn: Alert
+    dependsOn:
+      - "[concat(resourceId('Microsoft.OperationalInsights/workspaces/providers\
+        ', parameters('workspace'),
+        'Microsoft.SecurityInsights'),'/alertRules/12e52bb7-d36b-4426-b0b2-6629\
+        220e15ed')]"
