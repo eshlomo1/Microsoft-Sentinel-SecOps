@@ -1,0 +1,47 @@
+// OKTA Identity Attacks
+// An attempt to bypass MFA via known factor and based on the operation
+let factor = dynamic(["SMS","Email","Voice call","AD agent","LDAP agent"]);
+let operationRate = dynamic(["system.operation.rate_limit.violation","system.operation.rate_limit.warning"]);
+Okta_CL
+| where TimeGenerated >= ago(1d)
+| where eventType_s has_any (operationRate)
+    or debugContext_debugData_operationRateLimitSubtype_s has_any (factor)
+| project TimeGenerated, actor_displayName_s, client_userAgent_os_s, client_ipAddress_s, client_geographicalContext_state_s,displayMessage_s, outcome_result_s,
+outcome_reason_s
+
+------------------------------------------------------------------------------------------------------------------------------------------
+
+// OKTA - Potential Password Spray or Bruteforce 
+// Successful Brute Force attacks
+let Threat = dynamic(["Password Spray","Brute Force","OKTA Brute Force"]);
+let Severity = dynamic(["WARN","ERROR"]);
+Okta_CL 
+| where TimeGenerated >= ago(1d)
+| where debugContext_debugData_threatDetections_s has_any (Threat) 
+     and severity_s has_any (Severity)
+     and debugContext_debugData_threatSuspected_s == "true"
+     and outcome_result_s == "SUCCESS"
+| project TimeGenerated,actor_id_s, actor_type_s, client_ipAddress_s, eventType_s, severity_s, outcome_reason_s, outcome_result_s,debugContext_debugData_threatSuspected_s, debugContext_debugData_threatDetections_s, displayMessage_s, transaction_type_s, client_geographicalContext_state_s
+| summarize IPs = dcount(client_ipAddress_s), Location=make_set(client_geographicalContext_state_s) by actor_id_s
+| sort by IPs desc 
+
+------------------------------------------------------------------------------------------------------------------------------------------
+
+// OKTA - Potential Identity Attacks
+// Attempts to Brute Force or Password an Okta User Account
+let Threat = dynamic(["Password Spray","Brute Force","OKTA Brute Force"]);
+let Severity = dynamic(["WARN","ERROR"]);
+Okta_CL
+| where TimeGenerated >= ago(1d)
+| where debugContext_debugData_threatDetections_s has_any (Threat) 
+     and severity_s has_any (Severity)
+     and debugContext_debugData_threatSuspected_s == "true"
+| project TimeGenerated,actor_id_s, actor_type_s, client_ipAddress_s, eventType_s, severity_s, outcome_reason_s, outcome_result_s,debugContext_debugData_threatSuspected_s, debugContext_debugData_threatDetections_s, displayMessage_s, transaction_type_s, client_geographicalContext_state_s
+| summarize SeverityCount = count() by severity_s, client_ipAddress_s, client_geographicalContext_state_s
+
+------------------------------------------------------------------------------------------------------------------------------------------
+
+Okta_CL
+| where eventType_s contains "system.client.rate_limit.violation"
+| project actor_displayName_s, TimeGenerated, eventType_s, debugContext_debugData_operationRateLimitScopeType_s, outcome_result_s
+
