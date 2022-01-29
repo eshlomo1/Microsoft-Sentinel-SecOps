@@ -15,8 +15,14 @@
 |eventType eq "user.authentication.auth_via_mfa"|MFA challenge|
 |eventType eq "user.mfa.factor.update"|User changing MFA factors|
 |eventType eq "policy.evaluate_sign_on"|Sign in policy evaluation|
+|eventType eq "core.user.impersonation.session.initiated"|Initiate impersonation session|
 |eventType eq "user.authentication.sso"|User accesing app via single sign on|
 |eventType sw "user.authentication.auth"|All types of Auth events, covering MFA, AD, Radius, etc|
+
+## Admin Event 
+
+|eventType eq "core.user.admin_privilege.granted"| Remove admin privileges| 
+|eventType eq "core.user.admin_privilege.revoked|	add admin privileges|
 
 ## Okta Events
 
