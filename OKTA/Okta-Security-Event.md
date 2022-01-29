@@ -24,7 +24,7 @@
 |EventType Filter|Notes|
 |------------- |-------------|
 |eventType eq "core.user.admin_privilege.granted"| Remove admin privileges| 
-|eventType eq "core.user.admin_privilege.revoked|	add admin privileges|
+|eventType eq "core.user.admin_privilege.revoked|	Add admin privileges|
 
 ## Okta Events
 
