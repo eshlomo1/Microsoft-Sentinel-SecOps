@@ -38,5 +38,6 @@
 |eventType eq “system.org.rate_limit.violation”|Hitting the rate limit on requests|
 |eventType eq "application.user_membership.add"|Adding user to application membership|
 |eventType eq "user.session.access_admin_app | These events are associated with users accessing the admin side |
+|eventType eq "app.oauth2.as.key.rollover" | Custom Authorization Server token signing key rolled over |
 
 Refernece: https://developer.okta.com/docs/reference/api/system-log/
