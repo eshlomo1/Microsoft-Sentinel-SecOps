@@ -19,7 +19,7 @@
 |eventType eq "user.authentication.sso"|User accesing app via single sign on|
 |eventType sw "user.authentication.auth"|All types of Auth events, covering MFA, AD, Radius, etc|
 
-## Admin Event 
+## Admin Events
 
 |EventType Filter|Notes|
 |------------- |-------------|
