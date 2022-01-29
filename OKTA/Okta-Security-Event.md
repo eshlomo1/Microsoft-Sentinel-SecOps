@@ -1,4 +1,4 @@
-# Okta Event Types of Interest 
+# Okta Event of Interest
 
 ### The following event is the main Okta event. This event appears on the System log API (Core Okta API) when a suspicious event occurs.
 ### When you export the logs to SIEM platform that could be Event Types of Interest for Security Teams
