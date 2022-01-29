@@ -1,8 +1,8 @@
 # Azure Sentinel 4 SecOps
 
-### Welcome to the Azure Sentinel 4 SecOps!
+### Welcome to the Microsoft Sentinel 4 SecOps!
 
-This repository contains many Azure Sentinel content with queries for exploration, hunting, and other activities.
+This repository contains many Microsoft Sentinel content with queries for exploration, hunting, and other activities.
 
 <img src="https://github.com/eshlomo1/Azure-Sentinel-4-SecOps/blob/master/General/Azure%20Sentinel%204%20SecOps.png">
 
