@@ -1,0 +1,6 @@
+// Discover Public documentDb
+resources
+| where type == "microsoft.documentdb/databaseaccounts"
+| extend PublicCOSMOS = parse_json(properties).publicNetworkAccess
+| extend URL = parse_json(properties).documentEndpoint
+| project name, resourceGroup, PublicCOSMOS, URL
