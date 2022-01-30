@@ -3,4 +3,7 @@
 resources
 | where type =~ 'Microsoft.Storage/storageAccounts'
 | extend allowBlobPublicAccess = parse_json(properties).allowBlobPublicAccess
-| project name, resourceGroup, allowBlobPublicAccess
+| extend enabledBlob = parse_json(properties).enabled
+| extend TLSver = parse_json(properties).minimumTlsVersion
+| where allowBlobPublicAccess == "true"
+| project name, resourceGroup, allowBlobPublicAccess, enabledBlob, TLSver
