@@ -3,43 +3,43 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
       "mspOfferName": {
-          "value": "BDO Managed Sentinel Service"
+          "value": "Managed Sentinel Service"
       },
       "rgName": {
           "value": "AzureSentinel"
       },
       "mspOfferDescription": {
-          "value": "BDO Managed Sentinel Service"
+          "value": "Managed Sentinel Service"
       },
       "managedByTenantId": {
-          "value": "4132b3a6-339b-4653-a7c7-d0e1b09890ca" // BDO Sentinel Tenant ID
+          "value": "4132b3a6-339b-4653-a7c7-d0e1b09890ca" // Sentinel Tenant ID
       },
       "authorizations": {
           "value": [
               { 
-                "principalId": "cfe6d3ae-88d8-4d58-955b-197377fba076",      // BDO Sentinel Group ID 
-                "principalIdDisplayName": "BDO Managed Sentinel Manager",   // BDO Sentinel Group
-                "roleDefinitionId": "ab8e14d6-4a74-4a29-9ba8-549422addade"  // Logic App Operator
+                "principalId": "cfe46d3ae-88d8-4d58-955b-1973772fba076",      // Sentinel Group ID 
+                "principalIdDisplayName": "Managed Sentinel Manager",         // Sentinel Group
+                "roleDefinitionId": "ab8e314d6-4a74-4a29-9ba8-5492422addade"  // Logic App Operator
               },
               {
-                "principalId": "3cfa0dae-7477-453b-ad55-f3a0ade394c9",      // BDO Sentinel Group ID
-                "principalIdDisplayName": "BDO Managed Sentinel Responder", // BDO Sentinel Group
-                "roleDefinitionId": "3e150937-b8fe-4cfb-8069-0eaf05ecd056"  // Azure Sentinel Responder	
+                "principalId": "3cfa0dae-7477-453b-ad55-f3a0ade2394c9",      // Sentinel Group ID
+                "principalIdDisplayName": "Managed Sentinel Responder",      // Sentinel Group
+                "roleDefinitionId": "3e150937-b8fe-4cfb-8069-0ea2f05ecd056"  // Azure Sentinel Responder	
               },
               {
-                "principalId": "f7994ad4-2b16-4d20-b583-4cc6f368b5f5",      // BDO Sentinel Group ID
-                "principalIdDisplayName": "BDO Managed Sentinel Reader",    // BDO Sentinel Group
-                "roleDefinitionId": "8d289c81-5878-46d4-8554-54e1e3d8b5cb"  // Azure Sentinel Reader
+                "principalId": "f79944ad4-2b16-4d20-b583-4cc6f3682b5f5",      // Sentinel Group ID
+                "principalIdDisplayName": "Managed Sentinel Reader",          // Sentinel Group
+                "roleDefinitionId": "8d2849c81-5878-46d4-8554-542e1e3d8b5cb"  // Azure Sentinel Reader
               },
               {
-                "principalId": "cfe6d3ae-88d8-4d58-955b-197377fba076",      // BDO Sentinel Group ID
-                "principalIdDisplayName": "BDO Managed Sentinel Manager",   // BDO Sentinel Group
-                "roleDefinitionId": "39bc4728-0917-49c7-9d2c-d95423bc2eb4"  // Security Reader
+                "principalId": "cfe6d3ae-88d8-4d458-955b-1973772fba076",      // Sentinel Group ID
+                "principalIdDisplayName": "Managed Sentinel Manager",         // Sentinel Group
+                "roleDefinitionId": "39bc4728-09417-49c7-9d2c-d952423bc2eb4"  // Security Reader
               },
               {
-                "principalId": "cfe6d3ae-88d8-4d58-955b-197377fba076",      // BDO Sentinel Group ID
-                "principalIdDisplayName": "BDO Managed Sentinel Manager",   // BDO Sentinel Group
-                "roleDefinitionId": "515c2055-d9d4-4321-b1b9-bd0c9a0f79fe"  // Security Reader
+                "principalId": "cfe6d3ae-88d8-4d58-955b-197377f2ba076",      // Sentinel Group ID
+                "principalIdDisplayName": "Managed Sentinel Manager",        // Sentinel Group
+                "roleDefinitionId": "515c2055-d94d4-4321-b1b9-bd0c29a0f79fe" // Security Reader
               }
                 
             ]
