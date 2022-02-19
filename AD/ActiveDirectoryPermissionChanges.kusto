@@ -1,0 +1,26 @@
+// ActiveDirectoryPermissionChanges
+let ADObjectTypes = datatable (ObjectClass:string, Severity:string, UIText:string)
+    ["domainDNS", "High","root domain",
+     "user",  "Low","User",
+     "group", "Low","Group",
+     "groupPolicyContainer", "Medium"," Group Policy Object",
+     "organizationalUnit", "Medium","Organizational Unit",
+     "container", "Medium","Built-in Container",
+     ];
+let CriticalADGroups = dynamic (["Enterprise Admins","Domain Admins","Schema Admins","Protected Users","DnsAdmins"]);
+let CriticalContainers = dynamic (["AdminSDHolder"]);
+SecurityEvent
+| where EventID == 5136
+| extend MyData = tostring(parse_xml(EventData))
+| extend Object = extractjson("$['EventData']['Data'][8]#text", MyData)
+| extend ObjectClass = extractjson("$['EventData']['Data'][10]#text", MyData)
+| extend OperationType = iif(extractjson("$['EventData']['Data'][14]#text", MyData) == "%%14674","Value Added","Value Deleted")
+| parse Object with * "CN=" GroupName "," *
+| parse Object with * "OU=" OUName "," *
+| where OperationType == "Value Added"
+| join kind = inner ADObjectTypes on ObjectClass
+| extend CriticalGroupChange = (GroupName has_any (CriticalADGroups))
+| extend CriticalContainerChange = (GroupName has_any (CriticalContainers))
+| extend Severity = iif(CriticalGroupChange == "true","High",Severity)
+| extend Severity = iif(CriticalContainerChange == "true","High",Severity)
+| project TimeGenerated,ObjectClass,Severity,Account,Object,OperationType,GroupName,CriticalGroupChange,CriticalContainerChange,UIText,OUName
