@@ -4,9 +4,9 @@
 let TorIP = _GetWatchlist('TOREN');
 AzureActivity
 | where CallerIpAddress != ''
-| extend WhoDidIt = Caller, ResourceName = tostring(parse_json(Properties).resource)
+| extend TIPSOurce = Caller, ResourceName = tostring(parse_json(Properties).resource)
 | join TorIP on $left.CallerIpAddress == $right.IP
-| project TimeGenerated, OperationNameValue, Type, SubscriptionId, ResourceName, ResourceGroup
+| project TimeGenerated, OperationNameValue, Type, SubscriptionId, TIPSOurce,ResourceName, ResourceGroup
 
 //--------------------------------------------
 
