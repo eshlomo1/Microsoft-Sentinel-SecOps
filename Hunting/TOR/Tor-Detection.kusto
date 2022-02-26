@@ -1,7 +1,7 @@
 // Tor IP Detection with _GetWatchlist
-let TorIP = _GetWatchlist('TOREN') | extend CallerIpAddress = ip;
+let TorIP = _GetWatchlist('TOREN');
 AzureActivity
-| where CallerIpAddress != 
-| extend Impacted = Caller, ResourceName = tostring(parse_json(Properties).resource)
-| join TorIP on CallerIpAddress 
-| project TimeGenerated,OperationNameValue, Type, SubscriptionId, ResourceName, ResourceGroup
+| where CallerIpAddress != ''
+| extend WhoDidIt = Caller, ResourceName = tostring(parse_json(Properties).resource)
+| join TorIP on $left.CallerIpAddress == $right.ip
+| project TimeGenerated, OperationNameValue, Type, SubscriptionId, ResourceName, ResourceGroup
