@@ -4,4 +4,4 @@ AzureActivity
 | where CallerIpAddress != 
 | extend Impacted = Caller, ResourceName = tostring(parse_json(Properties).resource)
 | join TorIP on CallerIpAddress 
-| project TimeGenerated, SearchKey, OperationNameValue, Type, SubscriptionId, WhoDidIt, ResourceName, ResourceGroup
+| project TimeGenerated,OperationNameValue, Type, SubscriptionId, ResourceName, ResourceGroup
