@@ -1,0 +1,5 @@
+// List the Anonymous public access to containers and blobs in Azure Storage
+resources
+| where type =~ 'microsoft.storage/storageaccounts'
+ | extend allowBlobPublicAccess = parse_json(properties).allowBlobPublicAccess
+ | project subscriptionId, resourceGroup, name, allowBlobPublicAccess
