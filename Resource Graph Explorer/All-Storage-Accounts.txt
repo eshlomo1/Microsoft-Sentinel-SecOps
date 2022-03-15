@@ -1,0 +1,11 @@
+// All Storage Accounts with Network ACL, Public Access, Private Endpoint Connection, etc.
+resources
+| where type == "microsoft.storage/storageaccounts"
+| extend RG = substring(id, 0, indexof(id, '/providers'))
+| extend supportsHttpsTrafficOnly = properties.supportsHttpsTrafficOnly
+| extend allowBlobPublicAccess = properties.allowBlobPublicAccess
+| extend networkAcls = tostring(properties.networkAcls.virtualNetworkRules)
+| extend privateEndpointConnections = tostring(properties.privateEndpointConnections)
+| extend defaultAction = properties.networkAcls.defaultAction
+| extend ipRules = tostring(properties.networkAcls.ipRules)
+| project-away kind, name, managedBy, sku, plan, identity, properties, tenantId, tags, zones, extendedLocation, apiVersion, resourceGroup
