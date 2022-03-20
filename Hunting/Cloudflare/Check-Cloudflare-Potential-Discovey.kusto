@@ -1,0 +1,11 @@
+// Cloudflare Potential Discovery. Based on malicious country + security level + bot score.  
+let genTime = ago(5m);
+let maliciousCountry = dynamic (['cn','ru','ir','ch','sg','be','tr','ps']); //malicious countries
+let secLevel = dynamic (['med','unk']); // security level med and higher - need to add high severity
+let botScore = dynamic(['1','2','3']); // A request was automated
+Cloudflare_CL
+| where TimeGenerated > genTime
+| where ClientCountry_s has_any (maliciousCountry)
+    and SecurityLevel_s has_any (secLevel)
+    and BotScore_d in (botScore)
+| project ClientCountry_s, SecurityLevel_s, BotScore_d, ClientIP_s, ClientRequestPath_s, ClientRequestProtocol_s, OriginResponseStatus_d

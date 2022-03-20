@@ -1,0 +1,18 @@
+// Bad client IP with specific ip classes Cloudflare 
+let genTime = ago(15m);
+let ipReputation = dynamic([
+//'unknown',           // receiving a lot of results cuz' unconfigured configuration  
+//'monitoringService', // receiving a lot of results cuz' unconfigured configuration  
+//'noRecord',          // receiving a lot of results cuz' unconfigured configuration  
+//'searchEngine',      // receiving a lot of results cuz' unconfigured configuration  
+'badHost', 
+'greylist', 
+'allowlist',
+'securityScanner', 
+'scan', 
+'tor'
+]);
+Cloudflare_CL
+| where TimeGenerated > genTime
+| where ClientIPClass_s in~ (ipReputation)
+| summarize count() by ClientIPClass_s

@@ -1,0 +1,18 @@
+// Unexpected client request - Cloudflare
+let genTime = ago(15m);
+let requestUri = dynamic([
+'/admin', 
+'/admin.php', 
+'wp-admin', 
+'.htaccess', 
+'/etc/shadow', 
+'/etc/passwd', 
+'/etc/hosts', 
+'/etc/ssh/' 
+]);
+Cloudflare
+| where TimeGenerated >= genTime
+| where HttpRequestMethod =~ 'GET'
+| where DstBytes != 0 or SrcBytes != 0
+| where ClientRequestURI has_any (requestUri)
+| extend IPCustomEntity = SrcIpAddr
