@@ -1,0 +1,12 @@
+let sessionImpersonation = dynamic
+([
+"user.session.impersonation.end",
+"user.session.impersonation.initiat",
+"user.session.impersonation.grant",
+"user.session.impersonation.extend",
+"user.session.impersonation.revoke"
+]);
+Okta_CL
+| where TimeGenerated >= ago(90d)
+| where eventType_s has_any (sessionImpersonation)
+| project actor_displayName_s,actor_alternateId_s, displayMessage_s, outcome_result_s, securityContext_asOrg_s, request_ipChain_s
