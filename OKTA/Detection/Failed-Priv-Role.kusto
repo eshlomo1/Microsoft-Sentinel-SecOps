@@ -1,0 +1,17 @@
+// Failed to add priv access to OKTA Roles
+let oktaroles = dynamic(["Super administrator",
+"Org administrator",
+"Group administrator",
+"App administrator",
+"Read-Only administrator",
+"Mobile administrator",
+"Help Desk administrator",
+"Report administrator",
+"API Access Management administrator","Group Membership administrator"]);
+Okta_CL
+| where TimeGenerated >= ago(1d)
+| where outcome_result_s == "FAILURE" or outcome_result_s == "DENY"
+| extend TargetDisplayName = tostring(parse_json(target_s)[0].displayName)
+| where debugContext_debugData_privilegeGranted_s has_any (oktaroles) or 
+        debugContext_debugData_privilegeRevoked_s has_any (oktaroles)
+| project TimeGenerated, actor_displayName_s, displayMessage_s, eventType_s, outcome_result_s, TargetDisplayName
