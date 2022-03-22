@@ -1,0 +1,25 @@
+let oktaroles = dynamic(["Super administrator",
+"Org administrator",
+"Group administrator",
+"App administrator",
+"Read-Only administrator",
+"Mobile administrator",
+"Help Desk administrator",
+"Report administrator",
+"API Access Management administrator",
+"Group Membership administrator"]);
+Okta_CL
+| where debugContext_debugData_privilegeGranted_s has_any (oktaroles) or 
+        debugContext_debugData_privilegeRevoked_s has_any (oktaroles)
+| where displayMessage_s == "Grant user privilege"
+| where outcome_result_s == "SUCCESS"
+| summarize by
+TimeGenerated,
+displayMessage_s,
+actor_alternateId_s,
+actor_displayName_s,
+debugContext_debugData_privilegeGranted_s,
+outcome_result_s,
+target_s
+| extend displayName_ = tostring(parse_json(target_s)[0].displayName)
+| extend alternateId_ = tostring(parse_json(target_s)[0].alternateId)
