@@ -7,6 +7,6 @@ let sessionImpersonation = dynamic
 "user.session.impersonation.revoke"
 ]);
 Okta_CL
-| where TimeGenerated >= ago(90d)
+| where TimeGenerated >= ago(3h)
 | where eventType_s has_any (sessionImpersonation)
 | project actor_displayName_s,actor_alternateId_s, displayMessage_s, outcome_result_s, securityContext_asOrg_s, request_ipChain_s
