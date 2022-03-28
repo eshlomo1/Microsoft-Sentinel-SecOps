@@ -49,4 +49,21 @@
 |eventType eq "user.session.access_admin_app | These events are associated with users accessing the admin side |
 |eventType eq "app.oauth2.as.key.rollover" | Custom Authorization Server token signing key rolled over |
 
+## Okta Account TakeOver Events 
+
+| EventType Filter |  Notes|
+| ------------- | -------------|
+
+|eventType eq "user.account.report_suspicious_activity_by_enduser" | Suspicious Activity reported by user
+|eventType eq “security.threat.detected" | ThreatInsight detection: access requests from IPs associated with malicious behavior
+|eventType eq "security.attack.start" | ThreatInsight detection: access requests from known malicious IPs targeting a specific org
+|eventType eq “user.mfa.okta_verify.deny_push” | User rejected an MFA push request
+|eventType eq “user.authentication.auth_via_mfa” AND outcome.result eq “FAILURE” | User authentication via MFA
+|eventType eq "user.session.start" | User Behavior Detections
+|eventType eq "policy.evaluate.sign_on" | User Behavior Detections
+|eventType eq "user.session.start" and debugContext.debugData.risk co "HIGH" | Risk Scoring Events
+|eventType eq "policy.evaluate_sign_on" and debugContext.debugData.logOnlySecurityData co "HIGH" | Risk Scoring Events
+|eventType eq "user.account.reset_password" and outcome.result eq "FAILURE" and outcome.reason eq "User suspended" | Self-service Password Reset attempted for a suspended user
+|User fails challenge during Self-Service Password Reset | User fails challenge during Self-Service Password Reset
+
 Refernece: https://developer.okta.com/docs/reference/api/system-log/
