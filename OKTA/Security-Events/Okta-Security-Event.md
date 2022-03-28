@@ -53,7 +53,6 @@
 
 | EventType Filter |  Notes|
 | ------------- | -------------|
-
 |eventType eq "user.account.report_suspicious_activity_by_enduser" | Suspicious Activity reported by user
 |eventType eq “security.threat.detected" | ThreatInsight detection: access requests from IPs associated with malicious behavior
 |eventType eq "security.attack.start" | ThreatInsight detection: access requests from known malicious IPs targeting a specific org
