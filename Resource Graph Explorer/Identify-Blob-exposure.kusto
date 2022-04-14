@@ -1,0 +1,16 @@
+// Identify Blob exposure based rules
+resources
+| where type =~ 'Microsoft.Storage/storageAccounts'
+| extend allowBlobPublicAccess = parse_json(properties).allowBlobPublicAccess
+| extend TLSver = parse_json(properties).minimumTlsVersion
+| extend SAS = parse_json(properties).keyCreationTime
+| extend Managed = parse_json(managedBy)
+| extend Status = parse_json(properties)
+| extend NetworkRules = parse_json(properties).networkAcls.virtualNetworkRules
+| extend PrivateEndpoint = parse_json(properties).privateEndpointConnections
+| extend NetworkACL = parse_json(properties).networkAcls
+| where PrivateEndpoint == "[]" 
+| where allowBlobPublicAccess == "true"
+| where NetworkRules == "[]"
+| where NetworkACL == '{"virtualNetworkRules":[],"defaultAction":"Allow","ipRules":[],"bypass":"AzureServices"}'
+| project name,NetworkACL , NetworkRules,PrivateEndpoint, resourceGroup, allowBlobPublicAccess,TLSver, tags, SAS, Managed, Status 
