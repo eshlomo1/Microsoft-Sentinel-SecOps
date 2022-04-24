@@ -1,0 +1,10 @@
+// Discover Postgres Databases on Azure 
+resources
+| where type contains "postgres"
+| extend Name = parse_json(name)
+| extend publicNetworkAccess = parse_json(properties).publicNetworkAccess
+| extend fullyQualifiedDomainName = parse_json(properties).fullyQualifiedDomainName
+| extend administratorLogin = parse_json(properties).administratorLogin
+| extend tag = parse_json(tags)
+| extend privateEndpoint = parse_json(properties).privateEndpointConnections
+| project Name, type, fullyQualifiedDomainName, administratorLogin, privateEndpoint
