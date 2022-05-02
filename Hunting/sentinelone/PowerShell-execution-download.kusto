@@ -1,0 +1,14 @@
+// Finds PowerShell execution events that could involve a download.
+SentinelOne_CL
+| extend ProcessCommandLine  = tostring(parse_json(DataFields_s).sourceprocesscommandline)
+| extend FileName = tostring(parse_json(DataFields_s).sourceprocessfilepath)
+| where TimeGenerated> ago(7d)
+| where FileName in~ ("powershell.exe", "powershell_ise.exe")
+| where ProcessCommandLine has "Net.WebClient"
+   or ProcessCommandLine has "DownloadFile"
+   or ProcessCommandLine has "Invoke-WebRequest"
+   or ProcessCommandLine has "Invoke-Shellcode"
+   or ProcessCommandLine has "http"
+   or ProcessCommandLine has "IEX"
+   or ProcessCommandLine has "Start-BitsTransfer"
+   or ProcessCommandLine has "mpcmdrun.exe"
