@@ -1,0 +1,7 @@
+// Potential for Malicious Activity that Classified as Phishing
+SentinelOne_CL
+| where TimeGenerated >= ago(1d)
+| where threatInfo_confidenceLevel_s == "malicious"
+    and threatInfo_classification_s == "Phishing"
+    and threatInfo_cloudFilesHashVerdict_s == "black"
+    and threatInfo_confidenceLevel_s == "malicious"
