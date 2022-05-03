@@ -1,0 +1,5 @@
+// AWS Root Access without MFA
+AWSCloudTrail
+| where TimeGenerated >= ago(1d)
+| where UserIdentityType contains "Root"
+| where parse_json(AdditionalEventData).MFAUsed == "No"
