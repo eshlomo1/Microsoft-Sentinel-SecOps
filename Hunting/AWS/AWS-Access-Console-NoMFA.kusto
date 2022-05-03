@@ -1,0 +1,9 @@
+// Login to AWS Management Console without MFA for the last 5 days
+AWSCloudTrail
+| where TimeGenerated >= ago(5d)
+| where EventName =~ "ConsoleLogin" 
+| extend MFAUsed = tostring(parse_json(AdditionalEventData).MFAUsed), LoginResult = tostring(parse_json(ResponseElements).ConsoleLogin)
+| where MFAUsed !~ "Yes" and LoginResult !~ "Failure"
+| summarize StartTimeUtc = min(TimeGenerated), EndTimeUtc = max(TimeGenerated) by EventName, EventTypeName, LoginResult, MFAUsed, UserIdentityAccountId,  UserIdentityPrincipalid, UserAgent, 
+UserIdentityUserName, SessionMfaAuthenticated, SourceIpAddress, AWSRegion
+| extend timestamp = StartTimeUtc, AccountCustomEntity = UserIdentityUserName, IPCustomEntity = SourceIpAddress
