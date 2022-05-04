@@ -1,0 +1,11 @@
+SecurityEvent
+| where EventID == "4625"
+| extend _Account = trim(@'[^\w]+', Account)
+| where SubStatus =~ "0xc000006A"
+| project TimeGenerated,
+Computer,
+_Account,
+LogonType,
+LogonProcessName,
+SubStatus,
+Activity
