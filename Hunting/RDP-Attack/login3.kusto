@@ -1,0 +1,6 @@
+SecurityEvent
+| where EventID == "4625"
+| where AccountType == "User"
+| extend _Account = trim(@'[^\w]+', Account)
+| summarize count() by _Account
+| sort by count_ desc
