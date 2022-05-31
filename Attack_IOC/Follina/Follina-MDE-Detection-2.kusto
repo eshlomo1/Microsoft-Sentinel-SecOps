@@ -12,7 +12,7 @@ let follina = dynamic([
 'Invoke-Expression',
 '/r %temp% %i'
 ]); // You can add any Base64 encoded data
-union DeviceEvents, DeviceNetworkEvents, DeviceProcessEvents
+union DeviceEvents, DeviceNetworkEvents
 | where InitiatingProcessParentFileName has_any (Parent)
     and ProcessCommandLine has_any (MalPROC)
 | where ProcessCommandLine has "Net.WebClient"
