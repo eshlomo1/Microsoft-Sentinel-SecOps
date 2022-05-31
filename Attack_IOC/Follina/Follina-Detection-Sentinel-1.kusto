@@ -1,0 +1,16 @@
+// Based on the clear explnation from Huntress > https://www.huntress.com/blog/microsoft-office-remote-code-execution-follina-msdt-bug
+// The recommendations for PowerShell Obfuscation > https://misconfig.io/powershell-hunting-with-microsoft-sentinel/
+// Follina Detection Query with Office exe, ProcessCommandLine, and RemoteIP and Success Connections
+
+let ParentPROC = dynamic(['sdiagnhost.exe','msdt.exe']);
+let follina = dynamic([
+'start-Process $cmd -windowstyle hidden -ArgumentList "/c taskkill /f /im msdt.exe"',
+'$cmd',
+'Invoke-Expression',
+'/r %temp% %i'
+]); // You can add any Base64 encoded data
+SecurityEvent 
+//| where EventID = EvtID
+| where ParentProcessName has_any (ParentPROC)
+    and EventData has_any (follina)
+| project TimeGenerated, NewProcessId, NewProcessName, ParentProcessName, CommandLine, EventID, Activity, Computer
