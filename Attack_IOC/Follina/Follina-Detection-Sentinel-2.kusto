@@ -1,0 +1,16 @@
+// Based on the clear explnation from Huntress > https://www.huntress.com/blog/microsoft-office-remote-code-execution-follina-msdt-bug
+// The recommendations for PowerShell Obfuscation > https://misconfig.io/powershell-hunting-with-microsoft-sentinel/
+// Follina Detection Query with Event data and Event ID
+
+// --------------------------------------------------------------------------------------------
+
+let timeframe = 7d;
+let Data = dynamic([
+'Start-Process',
+'ms-msdt:/id PCWDiagnostic /skip force /param',
+'Invoke-'
+]);
+SecurityEvent
+| where TimeGenerated >= ago(timeframe)
+| where EventID in (4103, 4104, 4105, 4688)
+    and EventData has_any (Data) 
