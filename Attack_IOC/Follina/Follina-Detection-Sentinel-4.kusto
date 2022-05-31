@@ -1,0 +1,18 @@
+// Based on the clear explnation from Huntress > https://www.huntress.com/blog/microsoft-office-remote-code-execution-follina-msdt-bug
+// The recommendations for PowerShell Obfuscation > https://misconfig.io/powershell-hunting-with-microsoft-sentinel/
+// Follina Detection Query with Event ID and RemoteIP
+
+// --------------------------------------------------------------------------------------------
+
+SecurityEvent 
+| where EventID==4688 
+    and RemoteIpAddress == "Public"
+| where ParentProcessName has_any ('sdiagnhost.exe', 'msdt.exe')
+| project TimeGenerated, 
+        NewProcessId, 
+        NewProcessName, 
+        ParentProcessName, 
+        CommandLine, 
+        EventID, 
+        Activity, 
+        Computer
