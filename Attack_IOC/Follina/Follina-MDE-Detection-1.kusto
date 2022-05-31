@@ -1,5 +1,9 @@
 // Based on the clear explnation from Huntress > https://www.huntress.com/blog/microsoft-office-remote-code-execution-follina-msdt-bug
-// Follina Detection Query with Office exe, 
+// The recommendations for PowerShell Obfuscation > https://misconfig.io/powershell-hunting-with-microsoft-sentinel/
+// Follina Detection Query with Office exe, ProcessCommandLine, and RemoteIP
+
+// --------------------------------------------------------------------------------------------
+
 let OfficeEXE = dynamic(['outlook.exe','winword.exe','excel.exe','powerpoint.exe']); // You can add any office exe's
 DeviceNetworkEvents
 //| where TimeGenerated > ago(31d) // Change date scope
