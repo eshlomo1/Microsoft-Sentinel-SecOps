@@ -1,0 +1,6 @@
+// Azure Kubernetes Admission Controller
+AzureActivity
+| where OperationNameValue endswith '/MUTATINGWEBHOOKCONFIGURATIONS/WRITE'
+    or OperationNameValue endswith '/VALIDATINGWEBHOOKCONFIGURATIONS/WRITE' 
+    and OperationNameValue startswith 'MICROSOFT.KUBERNETES/CONNECTEDCLUSTERS/ADMISSIONREGISTRATION.K8S.IO'
+    or OperationNameValue startswith 'MICROSOFT.CONTAINERSERVICE/MANAGEDCLUSTERS/ADMISSIONREGISTRATION.K8S.IO'
