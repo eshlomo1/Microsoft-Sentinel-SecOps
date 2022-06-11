@@ -1,0 +1,11 @@
+// Azure Key Vault Key Modified or Deleted
+AzureActivity
+| where OperationNameValue =~ 'MICROSOFT.KEYVAULT/VAULTS/KEYS/UPDATE/ACTION' 
+    or OperationNameValue =~ 'MICROSOFT.KEYVAULT/VAULTS/KEYS/CREATE' 
+    or OperationNameValue =~ 'MICROSOFT.KEYVAULT/VAULTS/KEYS/CREATE/ACTION' 
+    or OperationNameValue =~ 'MICROSOFT.KEYVAULT/VAULTS/KEYS/IMPORT/ACTION' 
+    or OperationNameValue =~ 'MICROSOFT.KEYVAULT/VAULTS/KEYS/RECOVER/ACTION' 
+    or OperationNameValue =~ 'MICROSOFT.KEYVAULT/VAULTS/KEYS/RESTORE/ACTION' 
+    or OperationNameValue =~ 'MICROSOFT.KEYVAULT/VAULTS/KEYS/DELETE' 
+    or OperationNameValue =~ 'MICROSOFT.KEYVAULT/VAULTS/KEYS/BACKUP/ACTION' 
+    or OperationNameValue =~ 'MICROSOFT.KEYVAULT/VAULTS/KEYS/PURGE/ACTION'
