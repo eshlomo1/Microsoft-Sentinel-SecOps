@@ -1,0 +1,10 @@
+// External connection made to host with port 22 by ROOT User
+let privusers = dynamic(["root"]);
+let extcon = dynamic(["External connection made to host"]);
+let susport = dynamic([" TCP port HTTPS(22)"]);
+LaceworkEvents_CL
+| where event_title_s == "New External Host Server Connection"
+    and event_description_s has_any (privusers)
+    and event_description_s has_any (extcon)
+| parse-where event_description_s with * "External connection made to host" Host "at TCP" *
+| project TimeGenerated, Host,event_title_s, event_type_s, lacework_account_s, event_severity_s, event_description_s
