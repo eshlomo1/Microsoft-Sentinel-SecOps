@@ -1,0 +1,8 @@
+// Identify Anonymous access to a Blob Container 
+StorageBlobLogs
+| where TimeGenerated > ago(15d)
+| where ServiceType == "blob"
+    and Type == "StorageBlobLogs"
+    and AuthenticationType == "Anonymous"
+    and StatusCode == "200"
+| project TimeGenerated, AccountName, Uri, AuthenticationType, OperationName, StatusCode, StatusText, CallerIpAddress
