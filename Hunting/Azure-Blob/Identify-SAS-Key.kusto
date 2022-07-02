@@ -1,0 +1,6 @@
+// Identify SAS and Shared Key Authorization
+StorageBlobLogs  
+| where AuthenticationType == 'OAuth' 
+    and RequesterUpn contains '@' 
+    and not(OperationName has_any('GetBlobServiceProperties', 'GetUserDelegationKey', 'CreatePathDir', 'ListBlobs')) 
+| project TimeGenerated, Protocol, OperationName, AuthenticationType, Uri, RequesterUpn, CallerIpAddress, Category, TlsVersion
