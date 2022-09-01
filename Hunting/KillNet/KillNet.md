@@ -8,3 +8,5 @@ Killnet is a decentralized group organized in squads. These squads have no geogr
 It has also been observed that some "trustworthy men" or "commanders" are the contacts in charge of recruitment, press, and other types of coordination. Each Squad works independently and sets its victims, although from time to time, a "call to arms" is made where a series of objectives are assigned to each squad. It has not been confirmed whether these are direct orders or just proposals.
 
 More information on [KillNet Group](https://killingthebear.jorgetesta.tech/actors/killnet/summary)
+
+![](https://github.com/eshlomo1/Microsoft-Sentinel-4-SecOps/blob/master/Hunting/KillNet/killnet.jpg)
