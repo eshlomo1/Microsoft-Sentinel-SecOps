@@ -1,13 +1,14 @@
-// // KillNet detection based on a dedicated IOC
-let killnet = datatable(ioc:string)
+// KillNet detection based on a dedicated IOC
+let killnetioc = datatable(ioc:string)
 [
 '185.100.87.133',
 '185.100.87.202',
+'185.220.100.241',
 '185.220.100.248',
-'195.206.105.217',
-'185.220.100.241'
+'195.206.105.217'
 ];
 AzureDiagnostics
-| where clientIP_s in (killnet)
+| where clientIP_s in (killnetioc)
 | extend ioc = clientIP_s
-| project TimeGenerated, ioc, Resource, requestUri_s, userAgent_s
+| project TimeGenerated, Resource,ioc,requestUri_s, userAgent_s
+| summarize count() by ioc
