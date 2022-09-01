@@ -1,4 +1,4 @@
-// Detect KillNet with by client IP and based on IOC list  
+// KillNet detection based on IOC list  
 let killnetioc = externaldata(ioc:string)
 [@"https://raw.githubusercontent.com/eshlomo1/Microsoft-Sentinel-4-SecOps/master/Hunting/KillNet/KillNet-IPs-Sep22.txt"]
 with(format="csv");
