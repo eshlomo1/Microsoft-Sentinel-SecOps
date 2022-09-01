@@ -1,0 +1,9 @@
+// A traffic originates from specific countries
+let geoip = materialize (externaldata(network:string,geoname_id:string,continent_code:string,continent_name:string,
+country_iso_code:string,country_name:string,is_anonymous_proxy:string,is_satellite_provider:string)
+[@"https://raw.githubusercontent.com/datasets/geoip2-ipv4/master/data/geoip2-ipv4.csv"] 
+with (ignoreFirstRecord=true, format="csv"));
+let ip = AzureDiagnostics
+| summarize count() by clientIP_s;ip
+| evaluate ipv4_lookup(geoip, clientIP_s, network)
+| project clientIP_s, network, count_, country_iso_code, country_name
