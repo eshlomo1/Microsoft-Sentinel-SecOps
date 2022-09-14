@@ -1,0 +1,10 @@
+//Look for the first time something occurs and new events
+let existingoperations=
+    AuditLogs
+    | where TimeGenerated > ago(90d) and TimeGenerated < ago(3d)
+    | distinct OperationName;
+AuditLogs
+| where TimeGenerated > ago(3d)
+| summarize Count=count() by OperationName, Category
+| where OperationName !in (existingoperations)
+| sort by Count desc 
