@@ -1,4 +1,4 @@
-# Azure Sentinel 4 SecOps
+# Microsoft Sentinel - SOC Operations
 
 ### Welcome to the Microsoft Sentinel 4 SecOps!
 
