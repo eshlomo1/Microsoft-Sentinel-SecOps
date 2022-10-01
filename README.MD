@@ -1,6 +1,6 @@
 # Microsoft Sentinel - SOC Operations
 
-### Welcome to the Microsoft Sentinel 4 SecOps!
+### Welcome to the Microsoft Sentinel - SOC Operations 
 
 This repository contains many Microsoft Sentinel content with queries for exploration, hunting, and other activities.
 
