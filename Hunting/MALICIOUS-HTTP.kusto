@@ -1,0 +1,11 @@
+// Search for malicious HTTP traffic
+DeviceNetworkEvents
+| where TimeGenerated >= ago(15d)
+| where ActionType == "NetworkSignatureInspected"
+| extend
+     SignatureName = tostring(parse_json(AdditionalFields).SignatureName),
+     SignatureMatchedContent = tostring(parse_json(AdditionalFields).SignatureMatchedContent),
+     SamplePacketContent = tostring(parse_json(AdditionalFields).SamplePacketContent)
+| where SignatureName == "HTTP_Client"
+| extend HTTP_Request_Method = tostring(split(SignatureMatchedContent, " /", 0)[0])
+| project TimeGenerated, DeviceName, DeviceId, ActionType, HTTP_Request_Method, RemoteUrl
