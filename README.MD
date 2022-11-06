@@ -1,4 +1,4 @@
-# Microsoft Sentinel - SOC Operations
+# Microsoft Sentinel - SEC Operations
 
 ### Welcome to the Microsoft Sentinel - SOC Operations 
 
