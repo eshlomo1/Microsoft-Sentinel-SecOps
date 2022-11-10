@@ -1,0 +1,5 @@
+// Detect AADInt commands execution
+DeviceEvents
+| extend AADIntCommand = tostring(AdditionalFields.Command)
+| where AADIntCommand contains "AADInt"
+//| project DeviceName, TimeGenerated, InitiatingProcessParentFileName,ActionType, AADIntCommand
