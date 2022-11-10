@@ -1,0 +1,11 @@
+// Detect if the AADInternal module exists on Devices
+let AADINTFiles = dynamic([
+"BouncyCastle.Crypto.dll",
+"Win32Ntv.dll",
+"AADInternals.psd1"
+]);
+DeviceImageLoadEvents
+| where FileName has_any (AADINTFiles)
+| where FolderPath contains "AADInternals"
+| join DeviceRegistryEvents on DeviceName
+| where RegistryValueData contains "AADInternals"
