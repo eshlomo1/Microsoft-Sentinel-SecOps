@@ -2,4 +2,4 @@
 DeviceEvents
 | extend AADIntCommand = tostring(AdditionalFields.Command)
 | where AADIntCommand contains "AADInt"
-//| project DeviceName, TimeGenerated, InitiatingProcessParentFileName,ActionType, AADIntCommand
+| project DeviceName, TimeGenerated, InitiatingProcessParentFileName,ActionType, AADIntCommand
