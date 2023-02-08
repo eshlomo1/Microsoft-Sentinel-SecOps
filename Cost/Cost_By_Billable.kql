@@ -1,4 +1,7 @@
-//Based on the Azure Sentinel Pricing
+//This query filters data from the specified data sources for the last 31 days where the data is billable, and the data source is one of the specified types. 
+// It then summarizes the data by solution (data source type) and calculates the total size in gigabytes and the estimated cost in USD using the variable "aap" 
+// which has been set to 2.30. The query sorts the results by the total size in gigabytes in descending order.
+
 let aap = 2.30;
 union isfuzzy=true withsource = tt *
 | where TimeGenerated > ago(31d)
