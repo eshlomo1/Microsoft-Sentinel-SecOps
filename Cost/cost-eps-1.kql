@@ -1,0 +1,18 @@
+// Process and Analyze large amounts of data in Microsoft Sentinel 
+union withsource=_TableName1 *
+| where _TimeReceived  > ago(31d)
+| summarize count() , Size = sum(_BilledSize) by bin(_TimeReceived, 1m), Type, _IsBillable, _BilledSize
+| extend counttemp =count_ / 60
+| summarize 
+           ['EPS'] = avg(counttemp),
+           ['Average Bytes']=avg(_BilledSize),
+           //['Bytes']=avg(counttemp) * avg(_BilledSize),
+           ['Minimum EPS']=min (counttemp),
+           ['Maximum EPS']=max(counttemp)
+  by ['Table Name']=Type
+
+// The query retrieves data from a table named "_TableName1", filtering out rows where the value in the "_TimeReceived" column is more than 31 days ago. 
+// The remaining data is then grouped into 1-minute bins based on the value in the "_TimeReceived" column, and further grouped by the values in the "Type", "_IsBillable", and "_BilledSize" columns.
+// The query then calculates the number of rows in each group, and the sum of the values in the "_BilledSize" column. The result is then divided by 60 to convert it to events per second.
+// Next, the query aggregates the data by "Type" and calculates the average, minimum, and maximum of the events per second, as well as the average of the "_BilledSize" values. The result is ordered by the maximum events per second in descending order.
+// The query is intended to provide an overview of the number of events received and processed over time, as well as the size of the data processed.
