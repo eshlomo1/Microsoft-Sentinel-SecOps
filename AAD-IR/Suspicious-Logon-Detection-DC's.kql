@@ -1,0 +1,36 @@
+// This query is looking at SecurityEvent logs to find event ID 5136, which indicates a change in an Active Directory object. The query then extracts information from
+// the event data, including the object that was changed, its class, and the type of operation that was performed (whether a value was added or deleted). It then parses
+// the object name to extract the group and organizational unit (OU) names.
+
+// The query then joins the extracted object class to a predefined ADObjectTypes table to assign a user-friendly name to the class. The query also determines whether the
+// group name matches any of the groups in a predefined list of critical AD groups, as well as any critical containers. It then assigns a severity level based on whether
+// the group or container change is critical.
+
+// The results of the query include the time the event was generated, the object class, the severity level, the account that made the change, the object that was 
+// changed, the operation type, the group name, whether the group change was critical, whether the container change was critical, the user-friendly name for the object 
+// class, and the name of the organizational unit.
+
+let ADObjectTypes = datatable (ObjectClass:string, Severity:string, UIText:string)
+    ["domainDNS","High","root domain","user", "Low","User", "group", 
+     "Low","Group","groupPolicyContainer","Medium","Group Policy Object","Medium",
+     "organizationalUnit", "Medium","Organizational Unit", "container","Built-in Container"
+     ];
+let CriticalADGroups = dynamic (["Schema Admins", "Enterprise Admins", "Domain Admins", "Protected Users", "DnsAdmins", "DHCPAdmins"]);
+let CriticalContainers = dynamic (["AdminSDHolder"]);
+SecurityEvent
+| where TimeGenerated >= ago(5h)
+| where EventID == 5136
+| extend MyData = tostring(parse_xml(EventData))
+| extend Object = extractjson("$['EventData']['Data'][8]#text", MyData)
+| extend ObjectClass = extractjson("$['EventData']['Data'][10]#text", MyData)
+| extend OperationType = iif(extractjson("$['EventData']['Data'][14]#text", MyData) == "%%14674","Value Added","Value Deleted")
+| parse Object with * "CN=" GroupName "," *
+| parse Object with * "OU=" OUName "," *
+| where OperationType == "Value Added"
+| join kind = inner ADObjectTypes on ObjectClass
+| extend CriticalGroupChange = (GroupName has_any (CriticalADGroups))
+| extend CriticalContainerChange = (GroupName has_any (CriticalContainers))
+| extend Severity = iif(CriticalGroupChange == "true","High",Severity)
+| extend Severity = iif(CriticalContainerChange == "true","High",Severity)
+| project TimeGenerated, ObjectClass, Severity, Account, OperationType, GroupName, CriticalGroupChange, CriticalContainerChange
+| order by TimeGenerated desc 
