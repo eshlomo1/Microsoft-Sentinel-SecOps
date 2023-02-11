@@ -2,7 +2,7 @@
 // This query retrieves audit logs related to policy events that occurred within the last 24 hours and projects the activity date 
 // and time, display name of the activity, display name of the target resource, user principal name of the user who initiated the activity, 
 // roles of the user who initiated the activity, and IP address of the user who initiated the activity.
-// ------------------------------------------------------------------------
+
 AuditLogs 
 | where TimeGenerated >= ago(1d)
 | where Category == "Policy" 

@@ -1,11 +1,9 @@
 // This query is looking at SecurityEvent logs to find event ID 5136, which indicates a change in an Active Directory object. The query then extracts information from
 // the event data, including the object that was changed, its class, and the type of operation that was performed (whether a value was added or deleted). It then parses
 // the object name to extract the group and organizational unit (OU) names.
-
 // The query then joins the extracted object class to a predefined ADObjectTypes table to assign a user-friendly name to the class. The query also determines whether the
 // group name matches any of the groups in a predefined list of critical AD groups, as well as any critical containers. It then assigns a severity level based on whether
 // the group or container change is critical.
-
 // The results of the query include the time the event was generated, the object class, the severity level, the account that made the change, the object that was 
 // changed, the operation type, the group name, whether the group change was critical, whether the container change was critical, the user-friendly name for the object 
 // class, and the name of the organizational unit.

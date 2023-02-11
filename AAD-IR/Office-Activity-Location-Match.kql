@@ -3,6 +3,7 @@
 // The query performs several operations on two tables, AADNonInteractiveUserSignInLogs and OfficeActivity, 
 // to join them based on the IP address and city. The final result is a table containing the distinct values of City, IPAddress, 
 // Location, UserDisplayName, and TimeGenerated1 from the AADNonInteractiveUserSignInLogs table, and the OfficeWorkload and Location from the OfficeActivity table.
+
 let dst = AADNonInteractiveUserSignInLogs 
 | where TimeGenerated > now() - 5h 
 | where isnotempty( IPAddress) 

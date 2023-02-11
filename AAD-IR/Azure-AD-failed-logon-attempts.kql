@@ -1,6 +1,7 @@
 // Azure AD failed logon attempts 
 // This further filters the results to show only failed sign-in attempts that have result type '50126' (Invalid username or password) 
 // or '50020' (The user doesn't exist in the tenant).
+
 SigninLogs
 | where TimeGenerated >= ago(1d)
 | where ResultType in ('50126','50020') 
