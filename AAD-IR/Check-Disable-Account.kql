@@ -1,0 +1,19 @@
+// The identityinfo table contains user profile information such as metadata information, groups membership, Azure AD roles assigned, UEBA and more enrichments information
+// It retrieves identity information related to disabled accounts that were changed within the last 24 hours, and projects the account name, 
+// user principal name (UPN), account status, group membership, user state, user state changed date, user type, and assigned roles.
+IdentityInfo 
+| where TimeGenerated >= ago(1d)
+// This further filters the results to show only disabled accounts.
+| where IsAccountEnabled == "0" 
+// This groups the results by UPN and returns the row with the most recent value for each column. This ensures that we only see the latest values for each user.
+| summarize arg_max(AccountName,*) by AccountUPN 
+| extend GroupMember = tostring(GroupMembership[0])
+| project 
+    AccountName, 
+    AccountUPN, 
+    IsAccountEnabled, 
+    GroupMember, 
+    UserState, 
+    UserStateChangedOn, 
+    UserType, 
+    AssignedRoles

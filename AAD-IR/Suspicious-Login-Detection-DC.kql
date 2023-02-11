@@ -1,0 +1,11 @@
+// Suspicious Login Detection on DC's 
+// This query filters a SecurityEvent log to show events in the last 7 days where the EventID is 4624 and 
+// the LogonType is either 2, 5, or 10, and the AccountDomain is either "DomainController" or "$". 
+// The results include the time the event was generated, the name of the account that was logged in, the name of the computer where the event occurred, 
+// the activity performed during the logon, the type of logon, and the authentication package used.
+SecurityEvent 
+| where TimeGenerated >= ago(7d)
+| where EventID == 4624 
+    and LogonType in ('2','5', '10')
+    and AccountDomain in ('DomainController','$')
+| project TimeGenerated, AccountName, Computer, Activity, LogonType, AuthenticationPackageName

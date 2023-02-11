@@ -1,8 +1,0 @@
-// The identityinfo table contains user profile information such as metadata information, groups membership, Azure AD roles assigned, UEBA and more enrichments information
-// Check disable account for the last 45 days and project with a specific columns
-IdentityInfo 
-| where TimeGenerated >= ago(45d)
-| where IsAccountEnabled == "0" 
-| summarize arg_max(AccountName,*) by AccountUPN
-| extend GroupMember = tostring(GroupMembership[0])
-| project  AccountName,AccountUPN, IsAccountEnabled, GroupMember, UserState, UserStateChangedOn, UserType, AssignedRoles

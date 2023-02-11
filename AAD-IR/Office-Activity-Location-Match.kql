@@ -1,0 +1,18 @@
+// Office Activity location matching
+// Extract location from different location & match to OfficeActivity 
+// The query performs several operations on two tables, AADNonInteractiveUserSignInLogs and OfficeActivity, 
+// to join them based on the IP address and city. The final result is a table containing the distinct values of City, IPAddress, 
+// Location, UserDisplayName, and TimeGenerated1 from the AADNonInteractiveUserSignInLogs table, and the OfficeWorkload and Location from the OfficeActivity table.
+let dst = AADNonInteractiveUserSignInLogs 
+| where TimeGenerated > now() - 5h 
+| where isnotempty( IPAddress) 
+| extend originCity = parse_json(LocationDetails).city 
+| extend City = tostring(originCity)
+| join kind=inner (SigninLogs 
+    | where isnotempty(IPAddress) 
+    | extend originCity = LocationDetails.city 
+| extend City = tostring(originCity)) on City 
+| distinct City,IPAddress,Location, UserDisplayName, TimeGenerated1;
+OfficeActivity 
+| where  TimeGenerated > now() - 5h
+| join kind=fullouter dst on $left.ClientIP==$right.IPAddress

@@ -1,7 +1,0 @@
-// Suspicious Login Detection on DC's
-SecurityEvent 
-| where TimeGenerated >= ago(7d)
-| where EventID == 4624 
-    and LogonType in ('2','5', '10')
-    and AccountDomain in ('DomainController','$')
-| project TimeGenerated, AccountName, Computer, Activity, LogonType, AuthenticationPackageName
