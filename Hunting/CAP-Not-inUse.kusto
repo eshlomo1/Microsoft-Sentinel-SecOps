@@ -1,0 +1,9 @@
+SigninLogs
+| where TimeGenerated > ago (31d)
+| project TimeGenerated, ConditionalAccessPolicies //ConditionalAccessStatus
+| mv-expand ConditionalAccessPolicies
+| extend CAResult = tostring(to stringnalAccessPolicies.result)
+| extend CAPolicyName = tostring(ConditionalAccessPolicies.displayName)
+//| extend CAPolicyName = tostring(ConditionalAccessStatus
+| summarize CAResults=make_set(CAResult) by CAPolicyName
+| where CAResults !has "success" and CAResults !has "failure"
