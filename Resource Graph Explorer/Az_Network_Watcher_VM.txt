@@ -7,5 +7,5 @@ resources
 | extend JoinID = toupper(id)
 | join kind=leftouter( resources 
 | where type == 'microsoft.compute/virtualmachines/extensions'
-| where name  == "AzureNetworkWatcherExtension" // and properties.autoUpgradeMinorVersion == false 
+| where name  == "AzureNetworkWatcherExtension" and properties.autoUpgradeMinorVersion == false 
 | extend VMId = toupper(substring(id, 0, indexof(id, '/extensions'))) ) on $left.JoinID == $right.VMId
