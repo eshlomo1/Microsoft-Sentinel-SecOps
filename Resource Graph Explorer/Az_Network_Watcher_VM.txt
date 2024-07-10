@@ -15,16 +15,4 @@ resources
 | where AutoUpgradeMinorVersion != "No Extension"
 | project id, name, type, location, ExtensionName, AutoUpgradeMinorVersion
 
-// ---------------------------------------------------------------------------------------------------------------------------------------------------
-
-resources
-| where type == 'microsoft.compute/virtualmachines'
-| extend JoinID = toupper(id)
-| join kind=leftouter( resources 
-| where type == 'microsoft.compute/virtualmachines/extensions'
-| where name  == "AzureNetworkWatcherExtension" and properties.autoUpgradeMinorVersion == false 
-| extend VMId = toupper(substring(id, 0, indexof(id, '/extensions'))) ) on $left.JoinID == $right.VMId
-
-// The resulting table will contain all VMs and their corresponding extensions that do not have autoUpgradeMinorVersion set to false. 
-// If a VM does not have such an extension, it will still appear in the results but with null values for the extension properties.
 
