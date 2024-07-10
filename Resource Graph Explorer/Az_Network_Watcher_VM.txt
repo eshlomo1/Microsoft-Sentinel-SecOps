@@ -1,18 +1,6 @@
 // Azure Network Watcher VM Extension Elevation of Privilege Vulnerability
 // This Azure Resource Graph query is designed to find virtual machines (VMs) in Azure that do not have their "AzureNetworkWatcherExtension" set to auto-upgrade to the latest minor version. // The query performs a left outer join between the list of VMs and their corresponding extensions.
 
-resources
-| where type == 'microsoft.compute/virtualmachines'
-| extend JoinID = toupper(id)
-| join kind=leftouter( resources 
-| where type == 'microsoft.compute/virtualmachines/extensions'
-| where name  == "AzureNetworkWatcherExtension" and properties.autoUpgradeMinorVersion == false 
-| extend VMId = toupper(substring(id, 0, indexof(id, '/extensions'))) ) on $left.JoinID == $right.VMId
-
-// The resulting table will contain all VMs and their corresponding extensions that do not have autoUpgradeMinorVersion set to false. 
-// If a VM does not have such an extension, it will still appear in the results but with null values for the extension properties.
-
-// ---------------------------------------------------------------------------------------------------------------------------------------------------
 
 resources
 | where type == 'microsoft.compute/virtualmachines'
@@ -26,4 +14,17 @@ resources
 | extend ExtensionName = coalesce(name, "No Extension"), AutoUpgradeMinorVersion = coalesce(properties.autoUpgradeMinorVersion, "No Extension")
 | where AutoUpgradeMinorVersion != "No Extension"
 | project id, name, type, location, ExtensionName, AutoUpgradeMinorVersion
+
+// ---------------------------------------------------------------------------------------------------------------------------------------------------
+
+resources
+| where type == 'microsoft.compute/virtualmachines'
+| extend JoinID = toupper(id)
+| join kind=leftouter( resources 
+| where type == 'microsoft.compute/virtualmachines/extensions'
+| where name  == "AzureNetworkWatcherExtension" and properties.autoUpgradeMinorVersion == false 
+| extend VMId = toupper(substring(id, 0, indexof(id, '/extensions'))) ) on $left.JoinID == $right.VMId
+
+// The resulting table will contain all VMs and their corresponding extensions that do not have autoUpgradeMinorVersion set to false. 
+// If a VM does not have such an extension, it will still appear in the results but with null values for the extension properties.
 
