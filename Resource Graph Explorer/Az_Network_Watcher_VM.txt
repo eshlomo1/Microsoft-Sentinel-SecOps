@@ -1,0 +1,11 @@
+// Azure Network Watcher VM Extension Elevation of Privilege Vulnerability
+// Search for installed Network Watcher Extension in Azure VMs 
+// It searches for automatic upgrades disabled
+
+resources
+| where type == 'microsoft.compute/virtualmachines'
+| extend JoinID = toupper(id)
+| join kind=leftouter( resources 
+| where type == 'microsoft.compute/virtualmachines/extensions'
+| where name  == "AzureNetworkWatcherExtension" // and properties.autoUpgradeMinorVersion == false 
+| extend VMId = toupper(substring(id, 0, indexof(id, '/extensions'))) ) on $left.JoinID == $right.VMId
